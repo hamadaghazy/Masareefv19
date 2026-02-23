@@ -1,0 +1,4571 @@
+<!doctype html>
+<html lang="ar" dir="rtl" data-theme="calm" data-theme="nature">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#f6f3ef" />
+
+<!-- Early theme (pre-CSS) to avoid flash -->
+<script>
+(()=>{
+  try{
+    const raw = localStorage.getItem('masareef_v13') || localStorage.getItem('masareef_v14') || localStorage.getItem('masareef_v12');
+    if(raw){
+      const s = JSON.parse(raw);
+      const th = s && s.cfg && s.cfg.ui && s.cfg.ui.theme;
+      if(th) document.documentElement.dataset.theme = th;
+    }
+  }catch(e){}
+})();
+</script>
+  <title>Masareef v17 — Koder Safe</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* ============================================================
+      Masareef v15 — Nature Theme (Calm & Natural) / Mobile-first
+      - Single-file HTML (offline-friendly except optional fonts)
+      - RTL Arabic + Mono numbers
+      - Separated Data layer / UI layer / Events
+    ============================================================ */
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+    :root{
+      /* THEME: SOFT (Default) — Eye‑friendly */
+      --bg:        #f4f7ff;
+      --bg1:       #ffffff;
+      --bg2:       #f0f4ff;
+      --bg3:       #e9efff;
+
+      --border:    rgba(55, 80, 160, .18);
+      --border2:   rgba(55, 80, 160, .30);
+
+      --text:      #0f1633;
+      --text2:     #2b3a6b;
+      --text3:     #6a76a3;
+
+      --teal:      #008e8a;
+      --teal-dim:  rgba(0, 142, 138, .14);
+      --teal-mid:  rgba(0, 142, 138, .25);
+
+      --amber:     #b06b00;
+      --amber-dim: rgba(176, 107, 0, .14);
+
+      --red:       #c8334d;
+      --red-dim:   rgba(200, 51, 77, .14);
+
+      --green:     #1a8f57;
+      --green-dim: rgba(26, 143, 87, .14);
+
+      --blue:      #2f6bff;
+      --blue-dim:  rgba(47, 107, 255, .13);
+
+      --radius:    16px;
+      --radius-sm: 12px;
+
+      --mono:      'IBM Plex Mono', monospace;
+      --sans:      'Cairo', system-ui, -apple-system, sans-serif;
+
+      --safe-top:  env(safe-area-inset-top, 0px);
+      --safe-bot:  env(safe-area-inset-bottom, 0px);
+
+      --shadow:    0 12px 40px rgba(15,22,51,.12);
+      --shadow2:   0 10px 32px rgba(15,22,51,.10);
+    }
+
+    
+
+
+:root[data-theme="calm"]{
+  /* Calm modern palette (cool mist + teal) */
+  --bg:        #f2f6f5;
+  --card:      #ffffff;
+  --card2:     #f7fbfa;
+  --text:      #172524;
+  --muted:     #516362;
+  --line:      #dfe9e7;
+  --accent:    #0f766e;
+  --accent2:   #2a9d8f;
+  --good:      #2f855a;
+  --warn:      #b7791f;
+  --danger:    #c24141;
+  --shadow:    0 12px 40px rgba(15,23,42,.08);
+  --shadow2:   0 10px 32px rgba(15,23,42,.06);
+}
+
+
+:root[data-theme="nature"]{
+  /* Calm natural palette (warm paper + sage) */
+  --bg:        #f6f3ef;
+  --bg1:       #ffffff;
+  --bg2:       #fbf8f3;
+  --bg3:       #efeae2;
+  --border:    rgba(57, 71, 62, .14);
+  --border2:   rgba(57, 71, 62, .24);
+  --text:      #1f2a24;
+  --text2:     #4f5e56;
+  --text3:     #7b877f;
+
+  --teal:      #2f7f6b;
+  --teal-dim:  rgba(47,127,107,.14);
+  --teal-mid:  rgba(47,127,107,.26);
+
+  --amber:     #b8862b;
+  --amber-dim: rgba(184,134,43,.14);
+
+  --red:       #c84b55;
+  --red-dim:   rgba(200,75,85,.14);
+
+  --green:     #2b8a5f;
+  --green-dim: rgba(43,138,95,.14);
+
+  --blue:      #2b6bb3;
+  --blue-dim:  rgba(43,107,179,.14);
+
+  --shadow:    0 10px 30px rgba(31,42,36,.08);
+  --shadow2:   0 6px 18px rgba(31,42,36,.06);
+}
+:root[data-theme="lavender"]{
+      /* Soft Lavender (less glare, gentle purple) */
+      --bg:        #f6f1ff;
+      --bg1:       #ffffff;
+      --bg2:       #f2ecff;
+      --bg3:       #ebe3ff;
+
+      --border:    rgba(92, 78, 160, .18);
+      --border2:   rgba(92, 78, 160, .30);
+
+      --text:      #171438;
+      --text2:     #332e63;
+      --text3:     #706aa8;
+
+      --teal:      #007f9a;
+      --teal-dim:  rgba(0,127,154,.14);
+      --teal-mid:  rgba(0,127,154,.25);
+
+      --amber:     #a35e00;
+      --amber-dim: rgba(163,94,0,.14);
+
+      --red:       #c02b5d;
+      --red-dim:   rgba(192,43,93,.14);
+
+      --green:     #168a64;
+      --green-dim: rgba(22,138,100,.14);
+
+      --blue:      #3b61ff;
+      --blue-dim:  rgba(59,97,255,.13);
+
+      --shadow:    0 12px 40px rgba(26, 19, 70, .12);
+      --shadow2:   0 10px 32px rgba(26, 19, 70, .10);
+    }
+
+    :root[data-theme="dark"]{
+      /* Original Dark theme (optional) */
+      --bg:        #0b0d18;
+      --bg1:       #101320;
+      --bg2:       #181c30;
+      --bg3:       #1e2338;
+
+      --border:    rgba(100,130,255,.12);
+      --border2:   rgba(100,130,255,.22);
+
+      --text:      #e8eaf6;
+      --text2:     #8890b8;
+      --text3:     #5a6080;
+
+      --teal:      #00d4b4;
+      --teal-dim:  rgba(0,212,180,.12);
+      --teal-mid:  rgba(0,212,180,.25);
+
+      --amber:     #ffb740;
+      --amber-dim: rgba(255,183,64,.12);
+
+      --red:       #ff5c7a;
+      --red-dim:   rgba(255,92,122,.12);
+
+      --green:     #35d07f;
+      --green-dim: rgba(53,208,127,.12);
+
+      --blue:      #6699ff;
+      --blue-dim:  rgba(102,153,255,.12);
+
+      --shadow:    0 12px 40px rgba(0,0,0,.45);
+      --shadow2:   0 10px 32px rgba(0,0,0,.35);
+    }
+
+
+    html, body { height: 100%; overflow: hidden; background: radial-gradient(900px 520px at 8% -10%, var(--teal-dim), transparent 60%),
+        radial-gradient(800px 460px at 92% 0%, var(--blue-dim), transparent 55%),
+        var(--bg); color: var(--text); font-family: var(--sans); }
+
+    /* ── JS SENTINEL ── */
+    #jsBlocker{
+      position:fixed; inset:0;
+      background:#0b0d18; color:var(--red);
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      z-index:9999; gap:12px; padding:20px; text-align:center;
+      font-family: var(--mono);
+    }
+    #jsBlocker small{ color: var(--text3); font-family: var(--sans); font-size: 13px; line-height:1.5; }
+
+    /* ── APP SHELL ── */
+    #app{
+      height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      padding-top: var(--safe-top);
+      padding-bottom: var(--safe-bot);
+    }
+
+    /* ── HEADER ── */
+    #hdr{
+      flex-shrink:0;
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      padding: 12px 14px 10px;
+      background: var(--bg1);
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      z-index: 20;
+    }
+    #hdr-left{display:flex; align-items:center; gap:10px; min-width:0}
+    #hdr-logo{
+      font-family: var(--mono);
+      font-weight: 800;
+      font-size: 14px;
+      color: var(--teal);
+      letter-spacing: -.5px;
+      white-space: nowrap;
+    }
+    #hdr-meta{
+      min-width:0;
+      font-size: 10px;
+      color: var(--text3);
+      font-family: var(--mono);
+      line-height: 1.35;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    #hdr-right{display:flex; align-items:center; gap:8px; flex-shrink:0}
+    #hdr-storage{
+      font-family: var(--mono);
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(53,208,127,.2);
+      background: var(--green-dim);
+      color: var(--green);
+      white-space: nowrap;
+    }
+    #hdr-storage.off{
+      border-color: rgba(255,92,122,.25);
+      background: var(--red-dim);
+      color: var(--red);
+    }
+
+    #hdr-env{
+      font-family: var(--mono);
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(35,130,255,.22);
+      background: rgba(35,130,255,.08);
+      color: var(--accent);
+      white-space: nowrap;
+    }
+    #hdr-env.file{
+      border-color: rgba(245,158,11,.28);
+      background: var(--amber-dim);
+      color: var(--amber);
+    }
+    #hdr-env.local{
+      border-color: rgba(53,208,127,.25);
+      background: var(--green-dim);
+      color: var(--green);
+    }
+    #hdr-env.web{
+      border-color: rgba(35,130,255,.22);
+      background: rgba(35,130,255,.08);
+      color: var(--accent);
+    }
+    #hdr-btn{
+      all:unset; cursor:pointer;
+      font-size: 18px;
+      padding: 6px 10px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--bg2);
+      color: var(--text2);
+    }
+    #hdr-btn:active{transform: translateY(1px);}
+
+    /* Theme toggle button (same style as alerts) */
+    #hdr-theme{
+      all:unset;cursor:pointer;
+      width:34px;height:34px;border-radius:10px;
+      display:flex;align-items:center;justify-content:center;
+      border:1px solid var(--border);
+      background:var(--bg2);
+      color:var(--text2);
+    }
+    #hdr-theme:active{transform: translateY(1px);}
+
+    /* ── VIEWS ── */
+    #views{flex:1; overflow:hidden; position: relative;}
+    .view{
+      display:none;
+      position:absolute; inset:0;
+      overflow-y:auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 14px;
+      padding-bottom: 22px;
+      animation: fadeIn .15s ease;
+    }
+    .view.active{display:block;}
+    @keyframes fadeIn { from{opacity:.6; transform: translateY(4px);} to{opacity:1; transform: translateY(0);} }
+
+    /* ── BOTTOM NAV ── */
+    #nav{
+      flex-shrink:0;
+      display:grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 0;
+      border-top: 1px solid var(--border);
+      background: var(--bg1);
+      padding-bottom: var(--safe-bot);
+    }
+    #nav button{
+      all:unset;
+      cursor:pointer;
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      gap:2px;
+      padding: 8px 2px;
+      font-size: 9px;
+      color: var(--text3);
+      position: relative;
+      border-top: 2px solid transparent;
+      user-select:none;
+    }
+    #nav button .ico{font-size: 18px; line-height: 1;}
+    #nav button:active{background: var(--bg2);}
+    #nav button.active{color: var(--teal); border-top-color: var(--teal);}
+    #nav button.active .ico{filter: drop-shadow(0 0 5px rgba(0,212,180,.6));}
+    #nav-badge{
+      position:absolute;
+      top:6px;
+      right: calc(50% - 14px);
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--red);
+      color: white;
+      font-family: var(--mono);
+      font-size: 10px;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      box-shadow: 0 6px 18px rgba(0,0,0,.35);
+    }
+    #nav-badge.show{display:flex;}
+
+    /* ── CARDS ── */
+    .card{
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px;
+      margin-bottom: 12px;
+      box-shadow: var(--shadow);
+    }
+    .card-title{
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--text2);
+      margin-bottom: 10px;
+    }
+
+    /* ── BANNER ── */
+    .banner{
+      border: 1px solid;
+      border-radius: var(--radius-sm);
+      padding: 12px 12px;
+      font-size: 13px;
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+    .banner.ok{ background: var(--green-dim); border-color: rgba(53,208,127,.3); color: var(--green);}    
+    .banner.warn{ background: var(--amber-dim); border-color: rgba(255,183,64,.3); color: var(--amber);}    
+    .banner.bad{ background: var(--red-dim); border-color: rgba(255,92,122,.3); color: var(--red);}    
+
+    /* ── GRID: BALANCES ── */
+    .bal-grid{display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;}
+    .bal-cell{
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 12px 10px;
+      text-align:center;
+    }
+    .bal-ico{font-size: 18px; margin-bottom: 4px;}
+    .bal-val{font-family: var(--mono); font-size: 18px; font-weight: 800;}
+    .bal-name{font-size: 10px; color: var(--text3); margin-top: 2px;}
+
+    /* ── STATS ── */
+    .stat-row{display:flex; gap: 10px;}
+    .stat{flex:1; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px;}
+    .stat .k{font-family: var(--sans); font-size: 11px; color: var(--text3); margin-bottom: 6px;}
+    .stat .v{font-family: var(--mono); font-size: 20px; font-weight: 800;}
+    .v.pos{color: var(--green);}    
+    .v.neg{color: var(--red);}    
+    .v.amb{color: var(--amber);}    
+    .stat .s{font-size: 10px; color: var(--text3); margin-top: 4px; font-family: var(--mono);}    
+
+    /* ── QUICK ACTIONS ── */
+    .qa-grid{display:grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px;}
+    .qa{
+      all:unset;
+      cursor:pointer;
+      display:flex; align-items:center; gap: 10px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      padding: 12px 12px;
+      background: var(--bg3);
+      color: var(--text);
+      font-size: 13px;
+      user-select:none;
+    }
+    .qa:active{background: var(--bg2);}    
+    .qa .ico{font-size: 20px;}    
+    .qa.primary{ background: var(--teal-dim); border-color: rgba(0,212,180,.35); color: var(--teal);}    
+    .qa.amber{ background: var(--amber-dim); border-color: rgba(255,183,64,.35); color: var(--amber);}    
+
+    /* ── LIST ITEMS ── */
+    .list{display:flex; flex-direction:column; gap: 8px;}
+    .item{
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+    }
+    .item-head{display:flex; align-items:flex-start; justify-content:space-between; gap: 10px;}
+    .item-title{font-weight: 900; font-size: 13px; color: var(--text); display:flex; align-items:center; gap: 8px;}
+    .item-sub{font-family: var(--mono); font-size: 10px; color: var(--text3); margin-top: 4px;}
+    .item-amt{font-family: var(--mono); font-size: 14px; font-weight: 900; white-space: nowrap;}
+    .item-amt.pos{color: var(--green);}    
+    .item-amt.neg{color: var(--red);}    
+    .item-amt.xfer{color: var(--blue);}    
+
+    .chips{display:flex; gap:6px; flex-wrap:wrap; margin-top: 8px;}
+    .chip{
+      display:inline-flex; align-items:center; gap: 4px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 800;
+      border: 1px solid var(--border);
+      color: var(--text3);
+      background: rgba(0,0,0,.08);
+    }
+    .chip.red{background: var(--red-dim); border-color: rgba(255,92,122,.25); color: var(--red);}    
+    .chip.amber{background: var(--amber-dim); border-color: rgba(255,183,64,.25); color: var(--amber);}    
+    .chip.green{background: var(--green-dim); border-color: rgba(53,208,127,.25); color: var(--green);}    
+    .chip.blue{background: var(--blue-dim); border-color: rgba(102,153,255,.25); color: var(--blue);}    
+
+    .actions{display:flex; gap: 6px; flex-wrap:wrap; margin-top: 10px;}
+    .btn{
+      all:unset;
+      cursor:pointer;
+      display:inline-flex; align-items:center; justify-content:center; gap:6px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 900;
+      border: 1px solid var(--border);
+      background: var(--bg2);
+      color: var(--text2);
+      user-select:none;
+    }
+    .btn:active{transform: translateY(1px);}    
+    .btn.primary{background: var(--teal); color: #09121a; border-color: rgba(0,212,180,.65);}    
+    .btn.danger{background: var(--red-dim); color: var(--red); border-color: rgba(255,92,122,.35);}    
+    .btn.amber{background: var(--amber-dim); color: var(--amber); border-color: rgba(255,183,64,.35);}    
+
+    /* ── FORMS ── */
+    .fg{margin-bottom: 12px;}
+    .lbl{display:block; font-family: var(--mono); font-size: 11px; color: var(--text3); margin-bottom: 6px;}
+    .in{
+      width:100%;
+      border-radius: 12px;
+      border: 1px solid var(--border2);
+      background: var(--bg3);
+      color: var(--text);
+      padding: 11px 12px;
+      font-size: 15px;
+      outline: none;
+      font-family: var(--sans);
+    }
+    .in:focus{border-color: var(--teal);}    
+    .in.mono{font-family: var(--mono);}    
+    .row2{display:grid; grid-template-columns: 1fr 1fr; gap: 10px;}
+    .row3{display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;}
+    select.in{appearance:none;}
+
+    /* ── SEGMENTED KIND ── */
+    .seg{display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;}
+    .seg button{
+      all:unset; cursor:pointer; user-select:none;
+      padding: 10px 10px;
+      border-radius: 12px;
+      text-align:center;
+      border: 1px solid var(--border);
+      background: var(--bg3);
+      color: var(--text3);
+      font-weight: 900;
+      font-size: 13px;
+    }
+    .seg button.active.exp{background: var(--red-dim); border-color: rgba(255,92,122,.35); color: var(--red);}    
+    .seg button.active.inc{background: var(--green-dim); border-color: rgba(53,208,127,.35); color: var(--green);}    
+    .seg button.active.trn{background: var(--blue-dim); border-color: rgba(102,153,255,.35); color: var(--blue);}    
+
+    /* ── TOAST ── */
+    #toast{
+      position:fixed;
+      bottom: calc(76px + var(--safe-bot));
+      left: 50%;
+      transform: translateX(-50%) translateY(18px);
+      opacity: 0;
+      pointer-events:none;
+      background: var(--bg2);
+      border: 1px solid var(--border2);
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: var(--text);
+      z-index: 999;
+      transition: all .22s;
+      max-width: 92vw;
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
+      box-shadow: var(--shadow);
+    }
+    #toast.show{opacity:1; transform: translateX(-50%) translateY(0);}    
+
+    /* ── MODALS ── */
+    .overlay{
+      position:fixed; inset:0;
+      display:none;
+      align-items:flex-end;
+      justify-content:center;
+      background: rgba(0,0,0,.65);
+      backdrop-filter: blur(4px);
+      z-index: 500;
+      padding-bottom: var(--safe-bot);
+    }
+    .overlay.show{display:flex;}    
+    .sheet{
+      width:100%;
+      max-width: 540px;
+      background: var(--bg1);
+      border: 1px solid var(--border2);
+      border-radius: 22px 22px 0 0;
+      padding: 16px 14px 18px;
+      max-height: 86dvh;
+      overflow-y:auto;
+      box-shadow: var(--shadow);
+      position: relative;
+    }
+    .handle{
+      width: 44px; height: 4px;
+      background: var(--bg3);
+      border-radius: 99px;
+      margin: 0 auto 14px;
+    }
+    .sheet-title{
+      font-size: 16px;
+      font-weight: 900;
+      margin-bottom: 14px;
+      color: var(--text);
+    }
+    .xbtn{
+      all:unset; cursor:pointer; user-select:none;
+      position:absolute; left: 10px; top: 10px;
+      width: 38px; height: 38px;
+      display:flex; align-items:center; justify-content:center;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--bg2);
+      color: var(--text2);
+      font-size: 18px;
+    }
+    .xbtn:active{transform: translateY(1px);}    
+
+    /* ── EMPTY ── */
+    .empty{
+      padding: 28px 10px;
+      color: var(--text3);
+      text-align:center;
+      font-size: 13px;
+    }
+    .empty .ico{font-size: 36px; margin-bottom: 8px;}    
+
+    /* ── SMALL HELP TEXT ── */
+    .muted{color: var(--text3);}    
+    .mono{font-family: var(--mono);}    
+    .hr{height:1px; background: var(--border); margin: 12px 0;}    
+    .pill{
+      display:inline-flex; align-items:center; gap:6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--bg3);
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text2);
+    }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar{width:3px}
+    ::-webkit-scrollbar-track{background:transparent}
+    ::-webkit-scrollbar-thumb{background:var(--bg3);border-radius:99px}
+  
+
+/* Boot overlay (shows only if app didn't start) */
+.bootBlocker{
+  position:fixed; inset:0; z-index:9998;
+  display:flex; align-items:center; justify-content:center;
+  background: linear-gradient(180deg, rgba(15,118,110,.10), rgba(15,23,42,.02));
+  backdrop-filter: blur(6px);
+}
+.bootCard{
+  width:min(420px, 92vw);
+  background: var(--card);
+  border:1px solid var(--line);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  padding: 18px 16px;
+  text-align:center;
+}
+.bootTitle{ font-weight:800; font-size: 20px; letter-spacing:.3px; }
+.bootSub{ margin-top:6px; color: var(--muted); font-size:14px; }
+.bootHint{ margin-top:10px; color: var(--muted); font-size:12px; line-height:1.5; }
+
+</style>
+</head>
+
+<body>
+  <div id="bootBlocker" class="bootBlocker">
+    <div class="bootCard">
+      <div class="bootTitle">Masareef</div>
+      <div class="bootSub">جارِ تشغيل التطبيق…</div>
+      <div class="bootHint">لو الشاشة وقفت هنا: يبقى JavaScript اتمنع أو حصل خطأ في التحميل داخل Koder Preview.</div>
+    </div>
+  </div>
+  <!-- JS SENTINEL -->
+  <div id="jsBlocker">
+    <div style="font-size:34px">⚠️</div>
+    <div style="font-weight:900">JavaScript متوقف أو حصل خطأ</div>
+    <small>افتح الملف في Safari (مش داخل فيسبوك/انستجرام) وتأكد إن Private Mode مقفول.</small>
+  </div>
+
+  <div id="app">
+    <header id="hdr">
+      <div id="hdr-left">
+        <div id="hdr-logo">◈ Masareef</div>
+        <div id="hdr-meta">…</div>
+      </div>
+      <div id="hdr-right">
+        <div id="hdr-env" class="pill">…</div>
+      <div id="hdr-storage">💾 OK</div>
+        <button id="hdr-theme" title="تغيير المظهر">🎨</button>
+        <button id="hdr-btn" title="تنبيهات">🔔</button>
+      </div>
+    </header>
+
+    <main id="views">
+      <!-- DASHBOARD -->
+      <section id="view-dashboard" class="view active">
+        <div id="dash_banner" class="banner warn">…</div>
+
+        <div class="card">
+          <div class="card-title">الأرصدة الحالية</div>
+          <div class="bal-grid">
+            <div class="bal-cell">
+              <div class="bal-ico">💳</div>
+              <div class="bal-val" id="bal_visa">—</div>
+              <div class="bal-name">Visa</div>
+            </div>
+            <div class="bal-cell">
+              <div class="bal-ico">🏧</div>
+              <div class="bal-val" id="bal_knet">—</div>
+              <div class="bal-name">K‑Net</div>
+            </div>
+            <div class="bal-cell">
+              <div class="bal-ico">💵</div>
+              <div class="bal-val" id="bal_cash">—</div>
+              <div class="bal-name">Cash</div>
+            </div>
+          </div>
+          <div class="hr"></div>
+          <div class="stat-row">
+            <div class="stat">
+              <div class="k">إجمالي السيولة</div>
+              <div class="v amb" id="bal_total">—</div>
+              <div class="s" id="bal_total_sub">As‑Of: —</div>
+            </div>
+            <div class="stat">
+              <div class="k">حجز التزامات</div>
+              <div class="v" id="locks_total">—</div>
+              <div class="s" id="locks_sub">35 يوم</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">أرقام اليوم</div>
+          <div class="stat-row">
+            <div class="stat">
+              <div class="k">Carry</div>
+              <div class="v" id="dash_carry">—</div>
+              <div class="s" id="dash_carry_range">—</div>
+            </div>
+            <div class="stat">
+              <div class="k">Base</div>
+              <div class="v amb" id="dash_base">—</div>
+              <div class="s" id="dash_fm">—</div>
+            </div>
+            <div class="stat">
+              <div class="k">صرف DAILY</div>
+              <div class="v" id="dash_spend">—</div>
+              <div class="s" id="dash_allow">المسموح اليوم: —</div>
+            </div>
+          </div>
+
+          <div class="qa-grid">
+            <button class="qa primary" data-nav="add"><span class="ico">➕</span>إضافة عملية</button>
+            <button class="qa" data-nav="checklist"><span class="ico">✅</span>المهام</button>
+            <button class="qa amber" id="btn_mark_clean"><span class="ico">🏷️</span>يوم نظيف</button>
+            <button class="qa" data-nav="forecast"><span class="ico">📈</span>توقع 30 يوم</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">تنبيهات سريعة</div>
+          <div id="dash_urgent"></div>
+        </div>
+      </section>
+
+      <!-- ADD TX -->
+      <section id="view-add" class="view">
+        <div class="card">
+          <div class="card-title">إضافة عملية</div>
+
+          <div class="fg">
+            <label class="lbl">النوع</label>
+            <div class="seg" id="add_kind_seg">
+              <button type="button" data-kind="EXPENSE">↓ مصروف</button>
+              <button type="button" data-kind="INCOME">↑ دخل</button>
+              <button type="button" data-kind="TRANSFER">⇄ تحويل</button>
+            </div>
+          </div>
+
+          <div class="row2">
+            <div class="fg">
+              <label class="lbl">المبلغ (د.ك)</label>
+              <input id="add_amount" class="in mono" type="number" step="0.001" inputmode="decimal" placeholder="0.000" />
+            </div>
+            <div class="fg">
+              <label class="lbl">التاريخ</label>
+              <input id="add_date" class="in mono" type="date" />
+            </div>
+          </div>
+
+          <div id="add_acc_group" class="fg">
+            <label class="lbl">الحساب</label>
+            <select id="add_account" class="in">
+              <option value="VISA">💳 Visa</option>
+              <option value="KNET">🏧 K‑Net</option>
+              <option value="CASH">💵 Cash</option>
+            </select>
+          </div>
+
+          <div id="add_trn_group" class="fg" style="display:none">
+            <label class="lbl">تحويل</label>
+            <div class="row2">
+              <select id="add_from" class="in">
+                <option value="KNET">🏧 K‑Net</option>
+                <option value="VISA">💳 Visa</option>
+                <option value="CASH">💵 Cash</option>
+              </select>
+              <select id="add_to" class="in">
+                <option value="VISA">💳 Visa</option>
+                <option value="KNET">🏧 K‑Net</option>
+                <option value="CASH">💵 Cash</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row2">
+            <div class="fg">
+              <label class="lbl">Bucket</label>
+              <select id="add_bucket" class="in">
+                <option value="DAILY">DAILY</option>
+                <option value="FIXED">FIXED</option>
+                <option value="DEBT">DEBT</option>
+                <option value="OTHER">OTHER</option>
+              </select>
+            </div>
+            <div class="fg">
+              <label class="lbl">التصنيف</label>
+              <select id="add_category" class="in">
+                <option value="GROCERY">🛒 جمعية/سوبرماركت</option>
+                <option value="FOOD">🍽️ طعام</option>
+                <option value="TRANSPORT">🚗 مواصلات</option>
+                <option value="RENT">🏠 إيجار</option>
+                <option value="CLEANING">🧹 نظافة</option>
+                <option value="BILLS">📄 فواتير</option>
+                <option value="PHONE">📱 خطوط/نت</option>
+                <option value="SCHOOL_FEES">📚 مدرسة</option>
+                <option value="EGYPT">🇪🇬 تحويل مصر</option>
+                <option value="IQAMA">🪪 إقامة</option>
+                <option value="DEBT">🧾 دين</option>
+                <option value="OTHER">• أخرى</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="fg">
+            <label class="lbl">ملاحظة</label>
+            <input id="add_note" class="in" type="text" placeholder="وصف مختصر…" />
+          </div>
+
+          <button id="btn_add_save" class="btn primary" style="width:100%">✓ حفظ العملية</button>
+        </div>
+
+        <div class="card">
+          <div class="card-title">نصيحة</div>
+          <div class="muted" style="line-height:1.7">
+            • لو العملية من نوع مصروف يومي (أكل/جمعية/مواصلات) خلي <b>Bucket = DAILY</b> عشان يتحسب في الـCarry.<br>
+            • الثوابت/المدارس/الإيجار عادة <b>FIXED</b>، والديون <b>DEBT</b>.
+          </div>
+        </div>
+      </section>
+
+      <!-- LEDGER -->
+      <section id="view-ledger" class="view">
+        <div class="card">
+          <div class="card-title">الدفتر</div>
+
+          <div class="row2" style="margin-bottom:10px">
+            <div class="fg" style="margin:0">
+              <label class="lbl">فلتر</label>
+              <select id="ledger_filter" class="in">
+                <option value="ALL">الكل</option>
+                <option value="EXPENSE">مصاريف</option>
+                <option value="INCOME">دخل</option>
+                <option value="TRANSFER">تحويلات</option>
+                <option value="DAILY">Bucket: DAILY</option>
+                <option value="FIXED">Bucket: FIXED</option>
+                <option value="DEBT">Bucket: DEBT</option>
+              </select>
+            </div>
+            <div class="fg" style="margin:0">
+              <label class="lbl">عرض حتى</label>
+              <input id="ledger_asof" class="in mono" type="date" />
+            </div>
+          </div>
+
+          <div id="ledger_list"></div>
+        </div>
+      </section>
+
+      <!-- CHECKLIST -->
+      <section id="view-checklist" class="view">
+        <div class="card">
+          <div class="card-title">المهام والخطة</div>
+
+          <div class="row2" style="margin-bottom:10px">
+            <div class="fg" style="margin:0">
+              <label class="lbl">اليوم</label>
+              <input id="ck_date" class="in mono" type="date" />
+            </div>
+            <div class="fg" style="margin:0">
+              <label class="lbl">العرض</label>
+              <select id="ck_mode" class="in">
+                <option value="TODAY">TODAY</option>
+                <option value="FM">FINANCIAL MONTH</option>
+                <option value="YEAR">YEAR</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="ck_list"></div>
+        </div>
+      </section>
+
+      <!-- FORECAST -->
+      <section id="view-forecast" class="view">
+        <div class="card">
+          <div class="card-title">Forecast — 30 يوم</div>
+
+          <div class="row2" style="margin-bottom:10px">
+            <div class="fg" style="margin:0">
+              <label class="lbl">السيناريو</label>
+              <select id="fc_scenario" class="in">
+                <option value="DISCIPLINE">DISCIPLINE (Base أو Min)</option>
+                <option value="BASE">BASE (Base كامل)</option>
+                <option value="ZERO">ZERO (بدون صرف)</option>
+                <option value="X">X (رقم ثابت)</option>
+              </select>
+            </div>
+            <div class="fg" style="margin:0">
+              <label class="lbl">X (لو اخترت X)</label>
+              <input id="fc_x" class="in mono" type="number" step="0.001" placeholder="0.000" />
+            </div>
+          </div>
+
+          <div id="fc_summary" class="banner warn" style="margin-bottom:12px">…</div>
+          <div id="fc_list"></div>
+        </div>
+      </section>
+
+      <!-- PLAN -->
+      <section id="view-plan" class="view">
+        <div class="card">
+          <div class="card-title">خطة السنة</div>
+          <div class="actions" style="margin-top:0">
+            <button class="btn" id="btn_sync_tasks">🔄 تحديث المهام</button>
+            <button class="btn primary" id="btn_series_add">➕ إضافة بند</button>
+          </div>
+          <div class="hr"></div>
+          <div id="plan_summary"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Series — البنود الثابتة/الدخل/الديون</div>
+          <div id="plan_series"></div>
+        </div>
+      </section>
+
+      <!-- SETTINGS -->
+      <section id="view-settings" class="view">
+        <div class="card">
+          <div class="card-title">إعدادات أساسية</div>
+
+          <div class="row2">
+            <div class="fg">
+              <label class="lbl">As‑Of</label>
+              <input id="st_asof" class="in mono" type="date" />
+            </div>
+            <div class="fg">
+              <label class="lbl">بداية الشهر المالي (1‑28)</label>
+              <input id="st_fm_start" class="in mono" type="number" min="1" max="28" />
+            </div>
+          </div>
+
+          <div class="row2">
+            <div class="fg">
+              <label class="lbl">بداية الخطة</label>
+              <input id="st_plan_start" class="in mono" type="date" />
+            </div>
+            <div class="fg">
+              <label class="lbl">نهاية الخطة</label>
+              <input id="st_plan_end" class="in mono" type="date" />
+            </div>
+          </div>
+
+          <div class="row2">
+            <div class="fg">
+              <label class="lbl">Carry Anchor Date</label>
+              <input id="st_anchor_date" class="in mono" type="date" />
+            </div>
+            <div class="fg">
+              <label class="lbl">Carry Anchor Value</label>
+              <input id="st_anchor_val" class="in mono" type="number" step="0.001" />
+            </div>
+          </div>
+
+          <div class="row2">
+            <div class="fg">
+              <label class="lbl">Min Daily (لو Carry سالب)</label>
+              <input id="st_min_daily" class="in mono" type="number" step="0.001" />
+            </div>
+            <div class="fg">
+              <label class="lbl">حساب الصرف اليومي</label>
+              <select id="st_daily_acc" class="in">
+                <option value="VISA">💳 Visa</option>
+                <option value="KNET">🏧 K‑Net</option>
+                <option value="CASH">💵 Cash</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button class="btn primary" id="btn_save_settings">💾 حفظ</button>
+            <button class="btn" id="btn_open_reconcile">⚖️ مطابقة</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">المظهر</div>
+
+          <div class="row2">
+            <div class="fg">
+              <label class="lbl">الثيم</label>
+              <select id="st_theme" class="in">
+              <option value="calm">🫧 هادئ</option>
+              <option value="nature">🌿 طبيعي دافئ</option>
+
+                <option value="soft">☀️ فاتح مريح</option>
+                <option value="lavender">💜 لافندر</option>
+                <option value="dark">🌙 داكن</option>
+              </select>
+            </div>
+            <div class="fg">
+              <label class="lbl">تنبيه</label>
+              <div class="text-sm muted">غيّر الثيم فوراً بدون ما يعيد حساباتك أو يلمس البيانات.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Opening Balances</div>
+
+          <div class="row3">
+            <div class="fg">
+              <label class="lbl">💳 Visa</label>
+              <input id="st_open_visa" class="in mono" type="number" step="0.001" />
+            </div>
+            <div class="fg">
+              <label class="lbl">🏧 K‑Net</label>
+              <input id="st_open_knet" class="in mono" type="number" step="0.001" />
+            </div>
+            <div class="fg">
+              <label class="lbl">💵 Cash</label>
+              <input id="st_open_cash" class="in mono" type="number" step="0.001" />
+            </div>
+          </div>
+
+          <div class="muted" style="font-size:12px; line-height:1.7">
+            لو حسّيت الأرقام غلط: استخدم <b>⚖️ مطابقة</b> وسجّل الأرصدة الفعلية — هيظبط الفرق بدون double counting.
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Base By Financial Month</div>
+          <div id="st_base_list"></div>
+          <div class="actions" style="margin-top:10px">
+            <button class="btn" id="btn_regen_base">🧮 إعادة توليد Base</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">نسخ احتياطي</div>
+          <div class="actions" style="margin-top:0">
+            <button class="btn" id="btn_export">⬇️ Export</button>
+            <button class="btn" id="btn_import">⬆️ Import</button>
+            <button class="btn danger" id="btn_reset_all">🗑️ Reset</button>
+          </div>
+          <div class="muted" style="margin-top:10px; line-height:1.7; font-size:12px">
+            Reset يمسح كل بيانات Masareef من الجهاز (LocalStorage / IndexedDB). استخدمه فقط لو محتاج تبدأ من جديد.
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <nav id="nav">
+      <button class="active" data-view="dashboard"><span class="ico">◈</span>لوحة</button>
+      <button data-view="add"><span class="ico">＋</span>إضافة</button>
+      <button data-view="ledger"><span class="ico">📒</span>دفتر</button>
+      <button data-view="checklist" style="position:relative">
+        <span class="ico">✅</span>مهام
+        <span id="nav-badge"></span>
+      </button>
+      <button data-view="forecast"><span class="ico">📈</span>توقع</button>
+      <button data-view="settings"><span class="ico">⚙️</span>إعدادات</button>
+    </nav>
+  </div>
+
+  <div id="toast"></div>
+
+  <!-- ALERTS POPUP -->
+  <div id="modal_alerts" class="overlay">
+    <div class="sheet">
+      <div class="handle"></div>
+      <button class="xbtn" data-close="modal_alerts">✕</button>
+      <div class="sheet-title">🔔 تنبيهات مهمة</div>
+      <div id="alerts_body"></div>
+      <div class="actions" style="margin-top:14px">
+        <button class="btn primary" id="btn_alerts_go_tasks">✅ افتح المهام</button>
+        <button class="btn" id="btn_alerts_dismiss">🙈 تجاهل اليوم</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FIRST RUN SETUP -->
+  <div id="modal_setup" class="overlay">
+    <div class="sheet">
+      <div class="handle"></div>
+      <button class="xbtn" data-close="modal_setup">✕</button>
+      <div class="sheet-title">🚀 إعداد أول مرة</div>
+      <div class="muted" style="line-height:1.7">
+        بناءً على آخر أرقام ذكرتها: Opening Balances = <span class="mono">Visa 4.057 • K‑Net 12.205 • Cash 4.000</span>.<br>
+        هل تريد إضافة العمليات التي قلتها (الفاتورة + التحويلات) بشكل صريح؟<br><br>
+        <b>ملاحظة:</b> لن نضيف أي عملية تلقائيًا بدون ضغطك على "تطبيق".
+      </div>
+      <div class="hr"></div>
+      <div id="setup_preview" class="list"></div>
+      <div class="actions" style="margin-top:14px">
+        <button class="btn primary" id="btn_setup_apply">✓ تطبيق</button>
+        <button class="btn" id="btn_setup_skip">تخطي</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TASK EXEC MODAL -->
+  <div id="modal_exec" class="overlay">
+    <div class="sheet">
+      <div class="handle"></div>
+      <button class="xbtn" data-close="modal_exec">✕</button>
+      <div class="sheet-title" id="exec_title">💸 تنفيذ</div>
+
+      <div id="exec_hint" class="muted" style="margin-bottom:10px; line-height:1.6"></div>
+
+      <div class="row2">
+        <div class="fg">
+          <label class="lbl">تاريخ التنفيذ</label>
+          <input id="exec_date" class="in mono" type="date" />
+        </div>
+        <div class="fg">
+          <label class="lbl">المبلغ</label>
+          <input id="exec_amount" class="in mono" type="number" step="0.001" />
+        </div>
+      </div>
+
+      <div class="row2">
+        <div class="fg">
+          <label class="lbl">الحساب</label>
+          <select id="exec_account" class="in">
+            <option value="VISA">💳 Visa</option>
+            <option value="KNET">🏧 K‑Net</option>
+            <option value="CASH">💵 Cash</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label class="lbl">Bucket</label>
+          <select id="exec_bucket" class="in">
+            <option value="FIXED">FIXED</option>
+            <option value="DAILY">DAILY</option>
+            <option value="DEBT">DEBT</option>
+            <option value="OTHER">OTHER</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="fg">
+        <label class="lbl">ملاحظة</label>
+        <input id="exec_note" class="in" type="text" />
+      </div>
+
+      <div class="actions">
+        <button class="btn primary" id="btn_exec_confirm">✓ تأكيد</button>
+        <button class="btn" data-close="modal_exec">إلغاء</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TASK EDIT MODAL -->
+  <div id="modal_task_edit" class="overlay">
+    <div class="sheet">
+      <div class="handle"></div>
+      <button class="xbtn" data-close="modal_task_edit">✕</button>
+      <div class="sheet-title">✏️ تعديل مهمة</div>
+
+      <div class="fg">
+        <label class="lbl">العنوان</label>
+        <input id="te_title" class="in" type="text" />
+      </div>
+
+      <div class="row2">
+        <div class="fg">
+          <label class="lbl">تاريخ الاستحقاق</label>
+          <input id="te_due" class="in mono" type="date" />
+        </div>
+        <div class="fg">
+          <label class="lbl">المبلغ</label>
+          <input id="te_amount" class="in mono" type="number" step="0.001" />
+        </div>
+      </div>
+
+      <div class="row2">
+        <div class="fg">
+          <label class="lbl">الحساب</label>
+          <select id="te_account" class="in">
+            <option value="VISA">💳 Visa</option>
+            <option value="KNET">🏧 K‑Net</option>
+            <option value="CASH">💵 Cash</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label class="lbl">Flexible؟</label>
+          <select id="te_flex" class="in">
+            <option value="NO">لا</option>
+            <option value="YES">نعم</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row2">
+        <div class="fg">
+          <label class="lbl">Bucket</label>
+          <select id="te_bucket" class="in">
+            <option value="FIXED">FIXED</option>
+            <option value="DAILY">DAILY</option>
+            <option value="DEBT">DEBT</option>
+            <option value="OTHER">OTHER</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label class="lbl">التصنيف</label>
+          <input id="te_cat" class="in mono" type="text" placeholder="RENT / BILLS / ..." />
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn primary" id="btn_te_save">💾 حفظ</button>
+        <button class="btn" id="btn_te_reset">↺ رجوع لإعدادات البند</button>
+      </div>
+
+      <div class="muted" style="margin-top:10px; line-height:1.6; font-size:12px">
+        لو عدّلت مهمة من Series، هتتعلّم إنها <b>Custom</b> ومش هتتغير تلقائيًا إلا لو عملت "رجوع".
+      </div>
+    </div>
+  </div>
+
+  <!-- SERIES EDIT MODAL -->
+  <div id="modal_series_edit" class="overlay">
+    <div class="sheet">
+      <div class="handle"></div>
+      <button class="xbtn" data-close="modal_series_edit">✕</button>
+      <div class="sheet-title" id="se_title">🧩 تعديل بند</div>
+
+      <div class="row2">
+        <div class="fg">
+          <label class="lbl">نوع البند</label>
+          <select id="se_kind" class="in">
+            <option value="EXPENSE">مصروف</option>
+            <option value="INCOME">دخل</option>
+            <option value="OP">تشغيل/مراجعة</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label class="lbl">Enabled</label>
+          <select id="se_enabled" class="in">
+            <option value="ON">ON</option>
+            <option value="OFF">OFF</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="fg">
+        <label class="lbl">العنوان</label>
+        <input id="se_name" class="in" type="text" />
+      </div>
+
+      <div class="row2">
+        <div class="fg">
+          <label class="lbl">المبلغ</label>
+          <input id="se_amount" class="in mono" type="number" step="0.001" />
+        </div>
+        <div class="fg">
+          <label class="lbl">الحساب</label>
+          <select id="se_account" class="in">
+            <option value="VISA">💳 Visa</option>
+            <option value="KNET">🏧 K‑Net</option>
+            <option value="CASH">💵 Cash</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row2">
+        <div class="fg">
+          <label class="lbl">Bucket</label>
+          <select id="se_bucket" class="in">
+            <option value="FIXED">FIXED</option>
+            <option value="DAILY">DAILY</option>
+            <option value="DEBT">DEBT</option>
+            <option value="OTHER">OTHER</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label class="lbl">Category</label>
+          <input id="se_cat" class="in mono" type="text" placeholder="RENT / BILLS / ..." />
+        </div>
+      </div>
+
+      <div class="row2">
+        <div class="fg">
+          <label class="lbl">Flexible؟</label>
+          <select id="se_flex" class="in">
+            <option value="NO">لا</option>
+            <option value="YES">نعم</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label class="lbl">Window Start Day (اختياري)</label>
+          <input id="se_window_day" class="in mono" type="number" min="1" max="28" placeholder="مثلاً 1" />
+        </div>
+      </div>
+
+      <div class="row2">
+        <div class="fg">
+          <label class="lbl">Recurrence</label>
+          <select id="se_rec" class="in">
+            <option value="MONTHLY">MONTHLY</option>
+            <option value="ONCE">ONCE</option>
+            <option value="CUSTOM">CUSTOM</option>
+            <option value="FM_END">FM_END (Day 9 Review)</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label class="lbl">Day (لـ MONTHLY)</label>
+          <input id="se_day" class="in mono" type="number" min="1" max="28" />
+        </div>
+      </div>
+
+      <div class="row2">
+        <div class="fg">
+          <label class="lbl">Start</label>
+          <input id="se_start" class="in mono" type="date" />
+        </div>
+        <div class="fg">
+          <label class="lbl">End</label>
+          <input id="se_end" class="in mono" type="date" />
+        </div>
+      </div>
+
+      <div class="fg" id="se_once_row" style="display:none">
+        <label class="lbl">Date (لـ ONCE)</label>
+        <input id="se_once_date" class="in mono" type="date" />
+      </div>
+
+      <div class="fg" id="se_custom_row" style="display:none">
+        <label class="lbl">CUSTOM Items — سطر لكل بند</label>
+        <textarea id="se_custom_text" class="in mono" rows="6" placeholder="صيغة كل سطر:
+YYYY-MM-DD = amount = اختياري عنوان
+مثال:
+2026-02-28 = 40 = تحويل مصر
+2026-03-28 = 40"></textarea>
+      </div>
+
+      <div class="actions">
+        <button class="btn primary" id="btn_se_save">💾 حفظ</button>
+        <button class="btn danger" id="btn_se_delete">🗑️ حذف</button>
+      </div>
+
+      <div class="muted" style="margin-top:10px; line-height:1.6; font-size:12px">
+        بعد حفظ Series: المهام هتتحدّث تلقائيًا، والـForecast والخطة هيتحسبوا على التعديل الجديد.
+      </div>
+    </div>
+  </div>
+
+  <!-- RECONCILE MODAL -->
+  <div id="modal_reconcile" class="overlay">
+    <div class="sheet">
+      <div class="handle"></div>
+      <button class="xbtn" data-close="modal_reconcile">✕</button>
+      <div class="sheet-title">⚖️ مطابقة الأرصدة</div>
+
+      <div class="muted" style="line-height:1.7; margin-bottom:10px">
+        الفكرة: بنحسب الأرصدة "المفروض تكون" حتى تاريخ معين، وبعدين تدخل الأرصدة الفعلية. نطلع الفرق ونطبقه على Opening Balances (بدون إضافة TX).
+      </div>
+
+      <div class="fg">
+        <label class="lbl">تاريخ المطابقة</label>
+        <input id="rec_date" class="in mono" type="date" />
+      </div>
+
+      <div id="rec_computed" class="banner warn" style="margin-bottom:12px">…</div>
+
+      <div class="row3">
+        <div class="fg">
+          <label class="lbl">💳 Visa فعلي</label>
+          <input id="rec_visa" class="in mono" type="number" step="0.001" />
+        </div>
+        <div class="fg">
+          <label class="lbl">🏧 K‑Net فعلي</label>
+          <input id="rec_knet" class="in mono" type="number" step="0.001" />
+        </div>
+        <div class="fg">
+          <label class="lbl">💵 Cash فعلي</label>
+          <input id="rec_cash" class="in mono" type="number" step="0.001" />
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn primary" id="btn_rec_apply">✓ تطبيق</button>
+        <button class="btn" data-close="modal_reconcile">إلغاء</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPORT/IMPORT MODAL -->
+  <div id="modal_backup" class="overlay">
+    <div class="sheet">
+      <div class="handle"></div>
+      <button class="xbtn" data-close="modal_backup">✕</button>
+      <div class="sheet-title" id="bk_title">Backup</div>
+
+      <div class="fg">
+        <textarea id="bk_text" class="in mono" rows="10" placeholder="هنا هيظهر الـJSON..."></textarea>
+      </div>
+
+      <div class="actions">
+        <button class="btn primary" id="btn_bk_copy">📋 Copy</button>
+        <button class="btn primary" id="btn_bk_apply" style="display:none">✓ Apply Import</button>
+        <button class="btn" data-close="modal_backup">إغلاق</button>
+      </div>
+
+      <div class="muted" style="margin-top:10px; line-height:1.6; font-size:12px">
+        Export: انسخ النص واحفظه في Notes / Drive.<br>
+        Import: الصق JSON ثم Apply.
+      </div>
+    </div>
+  </div>
+
+<script>
+  // Hide JS blocker if JS runs
+  try{ document.getElementById('jsBlocker').style.display='none'; }catch(e){}
+</script>
+
+<script>
+(() => {
+  'use strict';
+
+  /* ============================================================
+    1) UTILITIES
+  ============================================================ */
+  const U = {
+    qs: (sel, root=document) => root.querySelector(sel),
+    qsa: (sel, root=document) => Array.from(root.querySelectorAll(sel)),
+    esc: (s) => String((s==null?'':s)).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])),
+    pad2: (n) => String(n).padStart(2,'0'),
+    clamp3: (x) => Math.round((Number(x||0))*1000)/1000,
+    fmt3: (x) => (Number(x||0)).toFixed(3),
+    nowISO: () => new Date().toISOString(),
+    todayISO: () => {
+      const d = new Date();
+      const z = new Date(d.getTime() - d.getTimezoneOffset()*60000);
+      return z.toISOString().slice(0,10);
+    },
+    parseISO: (iso) => {
+      const [y,m,d] = String(iso||'').split('-').map(Number);
+      return new Date(y||1970,(m||1)-1,d||1,12,0,0,0);
+    },
+    toISO: (date) => {
+      const z = new Date(date.getTime() - date.getTimezoneOffset()*60000);
+      return z.toISOString().slice(0,10);
+    },
+    addDays: (iso, n) => {
+      const d = U.parseISO(iso);
+      d.setDate(d.getDate() + Number(n||0));
+      return U.toISO(d);
+    },
+    cmpISO: (a,b) => (a<b?-1:(a>b?1:0)),
+    uid: () => (Math.random().toString(16).slice(2) + '_' + Date.now().toString(16)),
+
+    toast: (msg, dur=1900) => {
+      const t = U.qs('#toast');
+      if(!t) return;
+      t.textContent = msg;
+      t.classList.add('show');
+      window.clearTimeout(U.__toastT);
+      U.__toastT = window.setTimeout(()=>t.classList.remove('show'), dur);
+    },
+
+    isInAppBrowser: () => {
+      const ua = navigator.userAgent || '';
+      return /FBAN|FBAV|Instagram|Line|WeChat|Twitter|Snapchat|wv|; wv\)/i.test(ua);
+    },
+
+    storageOK: () => {
+      try{
+        const k='__ms_test__';
+        localStorage.setItem(k,'1');
+        localStorage.removeItem(k);
+        return true;
+      }catch(e){ return false; }
+    },
+
+    daysInMonth: (y,m0) => new Date(y, m0+1, 0).getDate(),
+    mkDateClamped: (y,m0,day) => {
+      const d = Math.max(1, Math.min(Number(day||1), U.daysInMonth(y,m0)));
+      return `${y}-${U.pad2(m0+1)}-${U.pad2(d)}`;
+    },
+    daysBetween: (aISO,bISO) => Math.round((U.parseISO(bISO)-U.parseISO(aISO))/86400000),
+  };
+
+  window.addEventListener('error', (e)=>{
+    console.error('Global error:', (e && e.error) || e);
+    try{ U.toast('❌ حصل خطأ: '+(( (e && e.message) || 'unknown' ))); }catch(_){ }
+  });
+  window.addEventListener('unhandledrejection', (e)=>{
+    console.error('Unhandled rejection:', (e && e.reason) || e);
+    try{ U.toast('❌ خطأ غير متوقع'); }catch(_){ }
+  });
+
+  /* ============================================================
+   2) STORAGE + ENV (Koder-safe) — v16
+   هدف القسم ده:
+   - حفظ متعدد الطبقات: localStorage + IndexedDB + sessionStorage + window.name
+   - Emergency Backup/Restore تلقائي عند فشل الحفظ
+   - مؤشر واضح: FILE vs LOCALHOST vs WEB
+============================================================ */
+
+const APP_VERSION = 19;
+
+// ✅ خلي المفتاح ثابت عشان ما نخسرش أي بيانات قديمة
+const STORAGE_KEY      = 'masareef_v13';
+const STORAGE_KEY_OLD  = 'masareef_v12'; // legacy
+const LS_BACKUP_KEY    = STORAGE_KEY + '_backup';
+const LS_PREV_KEY      = STORAGE_KEY + '_prev';
+const SS_KEY           = STORAGE_KEY + '_session';
+const WN_PREFIX        = '__MASAREEF__V16__:'; // window.name emergency
+
+// IndexedDB (أقوى من localStorage في WebViews)
+const IDB_NAME  = 'masareef_idb_v1';
+const IDB_STORE = 'kv';
+const IDB_KEY   = STORAGE_KEY;
+const IDB_BK    = STORAGE_KEY + '_backup';
+
+
+function safeParse(raw){
+  try{ return JSON.parse(raw); }catch(e){ return null; }
+}
+
+function isLocalhostHost(h){
+  return h==='localhost' || h==='127.0.0.1' || h==='0.0.0.0';
+}
+function safeOrigin(){
+  try{ return location.origin && location.origin!=='null' ? location.origin : (location.protocol+'//'+(location.host||'file')); }
+  catch(_){ return 'unknown'; }
+}
+function sessionStorageOK(){
+  try{
+    const k='__ms_ss_test__';
+    sessionStorage.setItem(k,'1');
+    sessionStorage.removeItem(k);
+    return true;
+  }catch(e){ return false; }
+}
+
+// ENV — دي بتظهر في الهيدر + الداشبورد
+const ENV = {
+  IN_APP: U.isInAppBrowser(),
+  PROTOCOL: location.protocol,
+  HOST: location.hostname,
+  ORIGIN: safeOrigin(),
+  IS_FILE: location.protocol==='file:',
+  IS_LOCALHOST: isLocalhostHost(location.hostname||''),
+  STORAGE_LS_OK: U.storageOK(),
+  STORAGE_SS_OK: sessionStorageOK(),
+  STORAGE_IDB_OK: false,     // هيتحدث بعد init
+  PERSIST_OK: false,         // LS أو IDB
+  STORAGE_MODE: 'TEMP',      // LS / IDB / TEMP
+  STORAGE_LAST: { ok:false, via:'TEMP', err:'', at:null, bytes:0 },
+};
+
+// تحديث سريع للحالة
+function recomputePersist(){
+  ENV.PERSIST_OK = !!(ENV.STORAGE_LS_OK || ENV.STORAGE_IDB_OK);
+  if(ENV.PERSIST_OK){
+    // لو LS شغال خليه الأساسي، وإلا IDB
+    ENV.STORAGE_MODE = ENV.STORAGE_LS_OK ? 'LS' : 'IDB';
+  }else{
+    ENV.STORAGE_MODE = 'TEMP';
+  }
+}
+recomputePersist();
+
+/* ─────────────────────────────────────────────────────────────
+   IndexedDB helpers (async)
+───────────────────────────────────────────────────────────── */
+const IDB = {
+  _dbPromise:null,
+  _open(){
+    if(IDB._dbPromise) return IDB._dbPromise;
+    IDB._dbPromise = new Promise((resolve,reject)=>{
+      try{
+        if(!('indexedDB' in window)) return reject(new Error('indexedDB not supported'));
+        const req = indexedDB.open(IDB_NAME, 1);
+        req.onupgradeneeded = ()=>{
+          const db=req.result;
+          if(!db.objectStoreNames.contains(IDB_STORE)){
+            db.createObjectStore(IDB_STORE);
+          }
+        };
+        req.onsuccess = ()=> resolve(req.result);
+        req.onerror   = ()=> reject(req.error || new Error('indexedDB open error'));
+      }catch(e){ reject(e); }
+    });
+    return IDB._dbPromise;
+  },
+  async get(key){
+    const db = await IDB._open();
+    return new Promise((resolve,reject)=>{
+      try{
+        const tx = db.transaction(IDB_STORE,'readonly');
+        const st = tx.objectStore(IDB_STORE);
+        const r = st.get(key);
+        r.onsuccess = ()=> resolve(r.result || null);
+        r.onerror   = ()=> reject(r.error || new Error('idb get error'));
+      }catch(e){ reject(e); }
+    });
+  },
+  async set(key,val){
+    const db = await IDB._open();
+    return new Promise((resolve,reject)=>{
+      try{
+        const tx = db.transaction(IDB_STORE,'readwrite');
+        const st = tx.objectStore(IDB_STORE);
+        const r = st.put(val, key);
+        r.onsuccess = ()=> resolve(true);
+        r.onerror   = ()=> reject(r.error || new Error('idb put error'));
+      }catch(e){ reject(e); }
+    });
+  },
+  async del(key){
+    const db = await IDB._open();
+    return new Promise((resolve,reject)=>{
+      try{
+        const tx=db.transaction(IDB_STORE,'readwrite');
+        const st=tx.objectStore(IDB_STORE);
+        const r=st.delete(key);
+        r.onsuccess=()=>resolve(true);
+        r.onerror=()=>reject(r.error||new Error('idb delete error'));
+      }catch(e){ reject(e); }
+    });
+  },
+  async clear(){
+    const db = await IDB._open();
+    return new Promise((resolve,reject)=>{
+      try{
+        const tx=db.transaction(IDB_STORE,'readwrite');
+        const st=tx.objectStore(IDB_STORE);
+        const r=st.clear();
+        r.onsuccess=()=>resolve(true);
+        r.onerror=()=>reject(r.error||new Error('idb clear error'));
+      }catch(e){ reject(e); }
+    });
+  }
+};
+
+// init async: نجرب IDB ونحدّث ENV
+async function initPersistence(){
+  try{
+    await IDB._open();
+    ENV.STORAGE_IDB_OK = true;
+  }catch(e){
+    ENV.STORAGE_IDB_OK = false;
+  }
+  recomputePersist();
+  // حدّث الهيدر إن وجد
+  try{ window.__ms_setHdrIndicators && window.__ms_setHdrIndicators(); }catch(_){}
+}
+initPersistence(); // fire-and-forget
+
+/* ─────────────────────────────────────────────────────────────
+   Emergency shadow storage (حتى لو LS/IDB واقعين)
+───────────────────────────────────────────────────────────── */
+function shadowSave(payload){
+  // window.name: بيعيش داخل نفس التاب حتى لو عملت refresh
+  try{ window.name = WN_PREFIX + payload; }catch(_){}
+  // sessionStorage: أفضل شوية من window.name لو شغال
+  if(ENV.STORAGE_SS_OK){
+    try{ sessionStorage.setItem(SS_KEY, payload); }catch(_){}
+  }
+}
+function shadowLoad(){
+  // session أولاً
+  if(ENV.STORAGE_SS_OK){
+    try{
+      const raw=sessionStorage.getItem(SS_KEY);
+      if(raw) return raw;
+    }catch(_){}
+  }
+  // window.name
+  try{
+    const n=window.name||'';
+    if(n.startsWith(WN_PREFIX)) return n.slice(WN_PREFIX.length);
+  }catch(_){}
+  return null;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Candidate selection helper (pick newest by meta.updatedAt / savedAt)
+───────────────────────────────────────────────────────────── */
+function extractUpdatedAt(obj){
+  if(!obj || typeof obj!=='object') return '';
+  const a = (obj.meta && obj.meta.updatedAt) ? String(obj.meta.updatedAt) : '';
+  const b = obj.savedAt ? String(obj.savedAt) : '';
+  return a || b || '';
+}
+function pickNewestCandidate(cands){
+  // cands: [{raw, source}]
+  let best=null;
+  for(const c of cands){
+    const parsed = safeParse(c.raw);
+    if(!parsed) continue;
+    const ts = extractUpdatedAt(parsed);
+    if(!best){ best={...c, ts, parsed}; continue; }
+    if(ts && (!best.ts || ts>best.ts)) best={...c, ts, parsed};
+  }
+  return best;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   MIGRATIONS
+───────────────────────────────────────────────────────────── */
+/* ===========================
+   DEFAULT STATE (FIX v16)
+   - This was missing and caused: ReferenceError: defaultState
+   - When missing, the app crashes BEFORE loading saved data -> UI shows "—"
+=========================== */
+function defaultState(){
+  const now = U.nowISO();
+  return {
+    meta:{
+      app:'Masareef',
+      version:APP_VERSION,
+      createdAt:now,
+      updatedAt:now,
+      rev:1,
+      loadedFrom:'DEFAULT'
+    },
+    savedAt:now,
+
+    cfg:{
+      financialMonthStartDay:10,
+      planStartISO:'2026-02-19',
+      planEndISO:'2027-02-18',
+      asOfISO:'2026-02-21',
+
+      // Carry Anchor (best practice)
+      carryAnchorISO:'2026-02-19',
+      carryAnchorValue:-9.820,
+
+      defaultDailyAccount:'VISA',
+      minDailyWhenCarryNeg:0.300,
+
+      locks:{
+        horizonDays:35,
+        visaBillsDays:14
+      },
+
+      // daily base per financial-month
+      baseByFm:{},
+
+      // UI prefs
+      ui:{
+        theme:'nature',              // default to Soft (eye-friendly)
+        alertsDismissedISO:'',
+        alertsShownISO:'',
+        setupDone:false
+      }
+    },
+
+    // Opening balances (as-of your last confirmed snapshot)
+    openingBalances:{ VISA:4.057, KNET:12.205, CASH:4.000 },
+
+    // No preloaded transactions (prevents double-counting)
+    tx:[],
+
+    // Confirmation marks
+    dayMarks:{},
+
+    // Plan
+    series:[],
+    tasks:[],
+
+    monthlyReview:{}
+  };
+}
+
+
+function migrateLoadedState(s){
+  const d = defaultState();
+
+    // Back-compat: some old builds used state.opening
+    if(!s.openingBalances && s.opening) s.openingBalances = s.opening;
+    // Make sure both names point to the SAME object (avoid divergence)
+    if(s.openingBalances) s.opening = s.openingBalances;
+
+  if(!s || typeof s !== 'object') return d;
+
+  // ── META ───────────────────────────────
+  if(!s.meta || typeof s.meta !== 'object') s.meta = {};
+  s.meta.app = s.meta.app || d.meta.app;
+  if(!s.meta.createdAt) s.meta.createdAt = s.savedAt || d.meta.createdAt || U.nowISO();
+  if(!s.meta.updatedAt) s.meta.updatedAt = s.savedAt || d.meta.updatedAt || U.nowISO();
+  if(!s.meta.rev) s.meta.rev = 1;
+
+  // ── CFG ────────────────────────────────
+  if(!s.cfg || typeof s.cfg !== 'object') s.cfg = {};
+  // shallow merge (don't lose new keys)
+  s.cfg = Object.assign({}, d.cfg, s.cfg);
+
+  // nested merges
+  if(!s.cfg.baseByFm || typeof s.cfg.baseByFm !== 'object') s.cfg.baseByFm = {};
+  s.cfg.baseByFm = Object.assign({}, d.cfg.baseByFm, s.cfg.baseByFm);
+
+  if(!s.cfg.locks || typeof s.cfg.locks !== 'object') s.cfg.locks = {};
+  s.cfg.locks = Object.assign({}, d.cfg.locks, s.cfg.locks);
+
+  if(!s.cfg.ui || typeof s.cfg.ui !== 'object') s.cfg.ui = {};
+  s.cfg.ui = Object.assign({}, d.cfg.ui, s.cfg.ui);
+
+  // sanitize a few critical cfg values
+  s.cfg.financialMonthStartDay = Number(s.cfg.financialMonthStartDay || d.cfg.financialMonthStartDay || 10);
+  if(s.cfg.financialMonthStartDay < 1 || s.cfg.financialMonthStartDay > 28) s.cfg.financialMonthStartDay = 10;
+
+  s.cfg.minDailyWhenCarryNeg = U.clamp3(U.safeNum(s.cfg.minDailyWhenCarryNeg, d.cfg.minDailyWhenCarryNeg));
+  s.cfg.carryAnchorValue = U.clamp3(U.safeNum(s.cfg.carryAnchorValue, d.cfg.carryAnchorValue));
+
+  // ── OPENING BALANCES ───────────────────
+  if(!s.openingBalances || typeof s.openingBalances !== 'object') s.openingBalances = {};
+  s.openingBalances = Object.assign({}, d.openingBalances, s.openingBalances);
+  ['VISA','KNET','CASH'].forEach(k=>{
+    s.openingBalances[k] = U.clamp3(U.safeNum(s.openingBalances[k], d.openingBalances[k]));
+  });
+
+  // ── ARRAYS / OBJECTS ───────────────────
+  if(!Array.isArray(s.tx)) s.tx = [];
+  if(!Array.isArray(s.tasks)) s.tasks = [];
+  if(!Array.isArray(s.series)) s.series = [];
+  if(!s.dayMarks || typeof s.dayMarks !== 'object') s.dayMarks = {};
+  if(!s.monthlyReview || typeof s.monthlyReview !== 'object') s.monthlyReview = {};
+
+  if(!s.savedAt) s.savedAt = s.meta.updatedAt || U.nowISO();
+
+  // bump
+  s.version = APP_VERSION;
+  s.meta.version = APP_VERSION;
+
+  return s;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   LOAD STATE (sync) — LS / legacy / shadow (SS/WN)
+───────────────────────────────────────────────────────────── */
+function loadState(){
+  const candidates=[];
+
+  // localStorage candidates
+  if(ENV.STORAGE_LS_OK){
+    try{
+      const main = localStorage.getItem(STORAGE_KEY);
+      if(main) candidates.push({raw:main, source:'LS:main'});
+      const bk = localStorage.getItem(LS_BACKUP_KEY);
+      if(bk) candidates.push({raw:bk, source:'LS:backup'});
+      const prev = localStorage.getItem(LS_PREV_KEY);
+      if(prev) candidates.push({raw:prev, source:'LS:prev'});
+
+      // legacy keys (best-effort)
+      const legacyKeys=[STORAGE_KEY_OLD,'masareef_v11','masareef_v10','masareef_v9','masareef_v8','masareef_v7','masareef_v6','masareef_v5','masareef_v4','masareef_v3','masareef_v2'];
+      for(const k of legacyKeys){
+        const r = localStorage.getItem(k);
+        if(r) candidates.push({raw:r, source:'LS:'+k});
+      }
+    }catch(e){}
+  }
+
+  // shadow candidate (session/window)
+  const sh = shadowLoad();
+  if(sh) candidates.push({raw:sh, source:'SHADOW'});
+
+  const best = pickNewestCandidate(candidates);
+  if(!best || !best.parsed){
+    const fresh = defaultState();
+    fresh.meta.loadedFrom='DEFAULT';
+    return fresh;
+  }
+
+  const migrated = migrateLoadedState(best.parsed);
+  migrated.meta.loadedFrom = best.source;
+  return migrated;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   SAVE STATE (sync + async idb mirror)
+   ✅ يمنع crash لو حد نادى saveState(false)
+───────────────────────────────────────────────────────────── */
+let __emergencyShown = false;
+
+function setSaveStatus(ok, via, err, bytes){
+  ENV.STORAGE_LAST = {
+    ok: !!ok,
+    via: via || (ENV.STORAGE_MODE||'TEMP'),
+    err: err ? String(err) : '',
+    at: U.nowISO(),
+    bytes: bytes || 0
+  };
+  // لو آخر حفظ تم على LS أو IDB اعتبر Persist OK
+  if(ok && (via==='LS' || via==='IDB')) {
+    ENV.STORAGE_MODE = via;
+    if(via==='IDB') ENV.STORAGE_IDB_OK = true;
+    recomputePersist();
+  }
+  try{ window.__ms_setHdrIndicators && window.__ms_setHdrIndicators(); }catch(_){}
+}
+
+function saveState(arg1=state, arg2=false){
+  // support legacy wrong calls: saveState(false)
+  let s=arg1, showToast=arg2;
+  if(typeof arg1==='boolean'){ showToast=arg1; s=state; }
+  if(!s || typeof s!=='object') s=state;
+
+  // meta timestamps
+  try{
+    const now=U.nowISO();
+    s.savedAt=now;
+    if(!s.meta||typeof s.meta!=='object') s.meta={};
+    s.meta.updatedAt=now;
+    s.meta.version=APP_VERSION;
+  }catch(_){}
+
+  let payload='';
+  try{ payload=JSON.stringify(s); }
+  catch(e){
+    if(showToast) U.toast('❌ خطأ: البيانات لا يمكن حفظها');
+    setSaveStatus(false,'TEMP',e,0);
+    return false;
+  }
+
+  // always shadow save first
+  shadowSave(payload);
+
+  const bytes = payload.length;
+
+  // 1) Try localStorage (best)
+  if(ENV.STORAGE_LS_OK){
+    try{
+      const prev = localStorage.getItem(STORAGE_KEY);
+      if(prev && prev !== payload){
+        // keep previous snapshot for emergency rollback
+        try{ localStorage.setItem(LS_PREV_KEY, prev); }catch(_){}
+      }
+      // write main + backup mirror
+      localStorage.setItem(STORAGE_KEY, payload);
+      localStorage.setItem(LS_BACKUP_KEY, payload);
+      setSaveStatus(true,'LS','',bytes);
+      if(showToast) U.toast('✅ محفوظ (LS)');
+      return true;
+    }catch(e){
+      // fallthrough to IDB / TEMP
+      setSaveStatus(false,'TEMP',e,bytes);
+    }
+  }
+
+  // 2) Try IndexedDB (async, but we can treat as "attempted")
+  //    لو نجح هنحدّث المؤشر لاحقاً
+  (async ()=>{
+    try{
+      await IDB.set(IDB_KEY, payload);
+      await IDB.set(IDB_BK, payload);
+      ENV.STORAGE_IDB_OK = true;
+      recomputePersist();
+      setSaveStatus(true,'IDB','',bytes);
+    }catch(e){
+      ENV.STORAGE_IDB_OK = false;
+      recomputePersist();
+      setSaveStatus(false,'TEMP',e,bytes);
+      // Emergency modal only once per session
+      if(!__emergencyShown){
+        __emergencyShown=true;
+        try{
+          // افتح Backup modal تلقائياً لو موجود
+          setTimeout(()=>{
+            try{
+              window.__ms_openBackup && window.__ms_openBackup(true);
+            }catch(_){}
+          }, 0);
+        }catch(_){}
+      }
+    }
+  })();
+
+  // 3) TEMP (session/window) لحين ما IDB يخلص
+  if(showToast){
+    U.toast(ENV.STORAGE_IDB_OK ? '⏳ جارٍ الحفظ (IDB)…' : '⚠️ حفظ مؤقت — اعمل Backup');
+  }
+  return false;
+}
+
+/* Auto-save safety nets */
+window.addEventListener('pagehide', ()=>{ try{ saveState(state,false); }catch(_){ } });
+document.addEventListener('visibilitychange', ()=>{
+  if(document.visibilityState==='hidden'){ try{ saveState(state,false); }catch(_){ } }
+});
+window.addEventListener('beforeunload', ()=>{ try{ saveState(state,false); }catch(_){ } });
+
+/* ─────────────────────────────────────────────────────────────
+   AUTO RESTORE (async) — لو IDB فيه نسخة أحدث
+───────────────────────────────────────────────────────────── */
+async function autoRestoreFromIDB(){
+  // لو state لسه اتعمل من LS أو shadow.. نراجع IDB على مهله
+  try{
+    await IDB._open();
+  }catch(_){
+    return {restored:false, reason:'no idb'};
+  }
+
+  let raws=[];
+  try{
+    const a=await IDB.get(IDB_KEY);
+    if(a) raws.push({raw:a, source:'IDB:main'});
+    const b=await IDB.get(IDB_BK);
+    if(b) raws.push({raw:b, source:'IDB:backup'});
+  }catch(_){}
+
+  if(!raws.length) return {restored:false, reason:'empty'};
+
+  const best = pickNewestCandidate(raws);
+  if(!best || !best.parsed) return {restored:false, reason:'parse'};
+
+  const incoming = migrateLoadedState(best.parsed);
+  incoming.meta.loadedFrom = best.source;
+
+  const curTS = extractUpdatedAt(state) || '';
+  const inTS  = extractUpdatedAt(incoming) || '';
+  if(inTS && (!curTS || inTS>curTS)){
+    // hydrate in-place
+    try{
+      for(const k of Object.keys(state)) delete state[k];
+      for(const k of Object.keys(incoming)) state[k]=incoming[k];
+      // savedAt will be updated on next save
+      return {restored:true, source:best.source};
+    }catch(e){
+      return {restored:false, reason:'hydrate', err:e};
+    }
+  }
+  return {restored:false, reason:'not newer'};
+}
+/* ============================================================
+    3) DATA LAYER (Accounting + Plan)
+  ============================================================ */
+
+  const ACCOUNTS = ['VISA','KNET','CASH'];
+  const KIND = { EXPENSE:'EXPENSE', INCOME:'INCOME', TRANSFER:'TRANSFER', OP:'OP' };
+  const TASK_STATUS = { TODO:'TODO', DONE:'DONE', CANCELLED:'CANCELLED' };
+
+  const CAT = {
+    GROCERY:{label:'جمعية/سوبرماركت', icon:'🛒'},
+    FOOD:{label:'طعام', icon:'🍽️'},
+    TRANSPORT:{label:'مواصلات', icon:'🚗'},
+    RENT:{label:'إيجار', icon:'🏠'},
+    CLEANING:{label:'نظافة', icon:'🧹'},
+    BILLS:{label:'فواتير', icon:'📄'},
+    PHONE:{label:'خطوط/نت', icon:'📱'},
+    SCHOOL_FEES:{label:'مدرسة', icon:'📚'},
+    EGYPT:{label:'تحويل مصر', icon:'🇪🇬'},
+    IQAMA:{label:'إقامة', icon:'🪪'},
+    DEBT:{label:'دين', icon:'🧾'},
+    SALARY:{label:'راتب', icon:'💰'},
+    OTHER:{label:'أخرى', icon:'•'},
+    MONTH_CLOSE:{label:'مراجعة', icon:'🗂️'}
+  };
+
+  function catIcon(cat){ return ((CAT[cat] && CAT[cat].icon) || '•'); }
+  function catLabel(cat){ return ((CAT[cat] && CAT[cat].label) || String(cat||'OTHER')); }
+
+  function accountLabel(a){
+    a = String(a||'').toUpperCase();
+    if(a==='VISA') return '💳 Visa';
+    if(a==='KNET') return '🏧 K‑Net';
+    if(a==='CASH') return '💵 Cash';
+    return a || '—';
+  }
+
+  function bucketChip(bucket){
+    const b = String(bucket||'OTHER').toUpperCase();
+    if(b==='DAILY') return `<span class="chip blue">DAILY</span>`;
+    if(b==='FIXED') return `<span class="chip amber">FIXED</span>`;
+    if(b==='DEBT') return `<span class="chip red">DEBT</span>`;
+    return `<span class="chip">OTHER</span>`;
+  }
+
+  function getFMRange(iso){
+    const d = U.parseISO(iso);
+    const y = d.getFullYear();
+    const m = d.getMonth();
+    const day = d.getDate();
+    const startDay = Math.min(28, Math.max(1, Number(state.cfg.financialMonthStartDay||10)));
+
+    let start, end;
+    if(day >= startDay){
+      start = new Date(y, m, startDay, 12);
+      end   = new Date(y, m+1, startDay-1, 12);
+    }else{
+      start = new Date(y, m-1, startDay, 12);
+      end   = new Date(y, m, startDay-1, 12);
+    }
+    return { startISO: U.toISO(start), endISO: U.toISO(end) };
+  }
+  function fmKeyFromISO(iso){
+    const r = getFMRange(iso);
+    return `${r.startISO}_${r.endISO}`;
+  }
+  function fmLabel(iso){
+    const r = getFMRange(iso);
+    return `${r.startISO} → ${r.endISO}`;
+  }
+
+  function iterFinancialMonths(startISO, endISO){
+    const out=[];
+    let cursor = startISO;
+    const seen = new Set();
+    while(U.cmpISO(cursor, endISO) <= 0){
+      const r = getFMRange(cursor);
+      const key = `${r.startISO}_${r.endISO}`;
+      if(!seen.has(key)){
+        out.push({ key, startISO:r.startISO, endISO:r.endISO });
+        seen.add(key);
+      }
+      cursor = U.addDays(r.endISO, 1);
+    }
+    return out;
+  }
+
+  function seedBaseByFm(){
+    const schedule = [
+      { endFM:'2026-03-09', base:1.000 },
+      { endFM:'2026-04-09', base:0.800 },
+      { endFM:'2026-05-09', base:1.200 },
+      { endFM:'2026-06-09', base:1.300 },
+      { endFM:'2026-09-09', base:1.700 },
+      { endFM:'2026-11-09', base:1.700 },
+      { endFM:'2026-12-09', base:1.500 },
+      { endFM:'2027-02-09', base:1.700 },
+    ];
+
+    const months = iterFinancialMonths(state.cfg.planStartISO, state.cfg.planEndISO);
+    const map = {};
+    for(const fm of months){
+      let base = 1.700;
+      for(const s of schedule){
+        if(U.cmpISO(fm.endISO, s.endFM) <= 0){ base = s.base; break; }
+      }
+      map[fm.key] = base;
+    }
+    state.cfg.baseByFm = map;
+  }
+
+  function ensureBaseByFm(){
+    if(!state.cfg.baseByFm || typeof state.cfg.baseByFm !== 'object') state.cfg.baseByFm = {};
+    const months = iterFinancialMonths(state.cfg.planStartISO, state.cfg.planEndISO);
+    let changed = false;
+    for(const fm of months){
+      if(state.cfg.baseByFm[fm.key]==null){
+        // default fallback
+        state.cfg.baseByFm[fm.key] = 1.700;
+        changed = true;
+      }
+    }
+    // remove keys outside range (optional)
+    for(const k of Object.keys(state.cfg.baseByFm)){
+      const [s,e]=k.split('_');
+      if(!s || !e) continue;
+      if(U.cmpISO(e, state.cfg.planStartISO) < 0 || U.cmpISO(s, state.cfg.planEndISO) > 0){
+        delete state.cfg.baseByFm[k];
+        changed = true;
+      }
+    }
+    if(changed) bumpRev();
+  }
+
+  function baseFor(iso){
+    ensureBaseByFm();
+    const key = fmKeyFromISO(iso);
+    const v = state.cfg.baseByFm[key];
+    return (v==null) ? 1.700 : Number(v);
+  }
+
+  function normalizeTx(tx){
+    const t = {...tx};
+    t.id = t.id || U.uid();
+    t.createdAt = t.createdAt || U.nowISO();
+    t.date = t.date || t.dateISO || state.cfg.asOfISO;
+    t.kind = (t.kind||KIND.EXPENSE).toUpperCase();
+    t.amount = U.clamp3(t.amount||0);
+    t.bucket = (t.bucket||'OTHER').toUpperCase();
+    t.category = (t.category||'OTHER').toUpperCase();
+    t.note = String(t.note||'');
+    if(t.kind === KIND.TRANSFER){
+      t.from = String(t.from||'').toUpperCase();
+      t.to = String(t.to||'').toUpperCase();
+      t.account = null;
+    }else{
+      t.account = String(t.account||'VISA').toUpperCase();
+      t.from = null; t.to = null;
+    }
+    if(t.reversalOf) t.reversalOf = String(t.reversalOf);
+    return t;
+  }
+
+  function effectiveTx(asOfISO){
+    const voided = new Set();
+    for(const t of state.tx){
+      if(t.reversalOf) voided.add(t.reversalOf);
+    }
+    return state.tx
+      .filter(t => !voided.has(t.id))
+      .filter(t => !asOfISO || U.cmpISO(t.date, asOfISO) <= 0)
+      .slice()
+      .sort((a,b)=> (a.date===b.date ? String(a.createdAt||'').localeCompare(String(b.createdAt||'')) : a.date.localeCompare(b.date)));
+  }
+
+  function applyTx(bal, tx){
+    const amt = Number(tx.amount||0);
+    if(tx.kind === KIND.EXPENSE){
+      bal[tx.account] = U.clamp3((bal[tx.account]||0) - amt);
+    }else if(tx.kind === KIND.INCOME){
+      bal[tx.account] = U.clamp3((bal[tx.account]||0) + amt);
+    }else if(tx.kind === KIND.TRANSFER){
+      bal[tx.from] = U.clamp3((bal[tx.from]||0) - amt);
+      bal[tx.to]   = U.clamp3((bal[tx.to]||0) + amt);
+    }
+  }
+
+  function balancesAsOf(asOfISO){
+    const bal = {
+      VISA: Number(state.openingBalances.VISA||0),
+      KNET: Number(state.openingBalances.KNET||0),
+      CASH: Number(state.openingBalances.CASH||0),
+    };
+    for(const t of effectiveTx(asOfISO)){
+      applyTx(bal, t);
+    }
+    const total = U.clamp3((bal.VISA||0)+(bal.KNET||0)+(bal.CASH||0));
+    return { bal, total };
+  }
+
+  function dailySpend(iso){
+    // DAILY bucket only
+    let s = 0;
+    for(const t of effectiveTx(iso)){
+      if(t.date !== iso) continue;
+      if((t.bucket||'').toUpperCase() !== 'DAILY') continue;
+      const amt = Number(t.amount||0);
+      if(t.kind === KIND.EXPENSE) s += amt;
+      if(t.kind === KIND.INCOME)  s -= amt;
+    }
+    return U.clamp3(Math.max(0, s));
+  }
+
+  function isDayConfirmed(iso){
+    if(state.dayMarks && state.dayMarks[iso] && state.dayMarks[iso].confirmed) return true;
+    // any tx marks day as confirmed
+    return state.tx.some(t => t.date === iso);
+  }
+
+  function computeCarry(asOfISO){
+    const anchorISO = state.cfg.carryAnchorISO;
+    let carry0 = Number(state.cfg.carryAnchorValue||0);
+
+    if(U.cmpISO(asOfISO, anchorISO) < 0){
+      return { carryEnd: U.clamp3(carry0), carryBest: U.clamp3(carry0), carryWorst: U.clamp3(carry0), missingDays: [] };
+    }
+    if(asOfISO === anchorISO){
+      return { carryEnd: U.clamp3(carry0), carryBest: U.clamp3(carry0), carryWorst: U.clamp3(carry0), missingDays: [] };
+    }
+
+    let best = carry0;
+    let worst = carry0;
+    let cursor = U.addDays(anchorISO, 1);
+    const missing = [];
+
+    while(U.cmpISO(cursor, asOfISO) <= 0){
+      const base = baseFor(cursor);
+      const spend = dailySpend(cursor);
+      const confirmed = isDayConfirmed(cursor);
+
+      if(confirmed){
+        best = U.clamp3(best + base - spend);
+        worst = U.clamp3(worst + base - spend);
+      }else{
+        // unknown day: could be spend=0 (best) or spend=base (worst)
+        best = U.clamp3(best + base - 0);
+        worst = U.clamp3(worst + base - base);
+        missing.push(cursor);
+      }
+
+      cursor = U.addDays(cursor, 1);
+    }
+
+    return { carryEnd: best, carryBest: best, carryWorst: worst, missingDays: missing };
+  }
+
+  /* =========================
+    PLAN: Series → Tasks
+  ========================= */
+
+  function seedSeries(){
+    const start = state.cfg.planStartISO;
+    const end = state.cfg.planEndISO;
+    const series = [
+      // Rent & cleaning (month start day 10, can be paid from day 1)
+      { id:'SER_RENT', enabled:true, kind:'EXPENSE', title:'الإيجار', amount:190, account:'KNET', bucket:'FIXED', category:'RENT', flexible:false, recType:'MONTHLY', day:10, windowStartDay:1, startISO:start, endISO:end },
+      { id:'SER_CLEAN', enabled:true, kind:'EXPENSE', title:'عامل النظافة', amount:15, account:'CASH', bucket:'FIXED', category:'CLEANING', flexible:false, recType:'MONTHLY', day:10, windowStartDay:1, startISO:start, endISO:end },
+
+      // Phone & internet bills (Visa)
+      { id:'SER_LINES_ME_SAIF', enabled:true, kind:'EXPENSE', title:'خطك + خط سيف', amount:7.4, account:'VISA', bucket:'FIXED', category:'PHONE', flexible:false, recType:'MONTHLY', day:1, startISO:start, endISO:end },
+      { id:'SER_NET_SARA', enabled:true, kind:'EXPENSE', title:'نت سارة', amount:2.0, account:'VISA', bucket:'FIXED', category:'PHONE', flexible:false, recType:'MONTHLY', day:3, startISO:start, endISO:end },
+      { id:'SER_LINE_WIFE', enabled:true, kind:'EXPENSE', title:'خط المدام', amount:6.0, account:'VISA', bucket:'FIXED', category:'PHONE', flexible:false, recType:'MONTHLY', day:25, startISO:start, endISO:end },
+
+      // Salaries (editable + flexible)
+      { id:'SER_SALARY_WIFE', enabled:true, kind:'INCOME', title:'راتب ريهام (K‑Net)', amount:291, account:'KNET', bucket:'OTHER', category:'SALARY', flexible:true, recType:'MONTHLY', day:26, startISO:start, endISO:end },
+      { id:'SER_SALARY_ME', enabled:true, kind:'INCOME', title:'راتبي (Cash)', amount:280, account:'CASH', bucket:'OTHER', category:'SALARY', flexible:true, recType:'MONTHLY', day:10, startISO:'2026-03-01', endISO:end },
+
+      // Aunt debt (custom)
+      { id:'SER_AUNT_DEBT', enabled:true, kind:'EXPENSE', title:'قسط الخالة', amount:50, account:'KNET', bucket:'DEBT', category:'DEBT', flexible:true, recType:'CUSTOM', items:[
+        { dateISO:'2026-02-26', amount:50, title:'قسط الخالة (فبراير)' },
+        { dateISO:'2026-03-15', amount:50 },
+        { dateISO:'2026-04-15', amount:50 },
+        { dateISO:'2026-05-15', amount:50 },
+      ]},
+
+      // Schools (Saif+Sara) seasonal — you can edit endISO if this is last month
+      { id:'SER_SCHOOL_SS_1', enabled:true, kind:'EXPENSE', title:'مدارس سيف + سارة', amount:100, account:'KNET', bucket:'FIXED', category:'SCHOOL_FEES', flexible:false, recType:'MONTHLY', day:27, startISO:'2026-02-01', endISO:'2026-05-31' },
+      { id:'SER_SCHOOL_SS_2', enabled:true, kind:'EXPENSE', title:'مدارس سيف + سارة', amount:100, account:'KNET', bucket:'FIXED', category:'SCHOOL_FEES', flexible:false, recType:'MONTHLY', day:27, startISO:'2026-08-01', endISO:'2027-01-31' },
+
+      // Taxi Slim seasonal (flexible)
+      { id:'SER_TAXI_SLIM_1', enabled:true, kind:'EXPENSE', title:'تاكسي سليم', amount:30, account:'KNET', bucket:'FIXED', category:'TRANSPORT', flexible:true, recType:'MONTHLY', day:25, startISO:'2026-02-01', endISO:'2026-05-31' },
+      { id:'SER_TAXI_SLIM_2', enabled:true, kind:'EXPENSE', title:'تاكسي سليم', amount:30, account:'KNET', bucket:'FIXED', category:'TRANSPORT', flexible:true, recType:'MONTHLY', day:25, startISO:'2026-09-01', endISO:'2027-01-31' },
+
+      // Egypt transfers (custom amounts)
+      { id:'SER_EGYPT', enabled:true, kind:'EXPENSE', title:'تحويل مصر', amount:100, account:'KNET', bucket:'FIXED', category:'EGYPT', flexible:true, recType:'CUSTOM', items:[
+        {dateISO:'2026-02-28', amount:40},
+        {dateISO:'2026-03-28', amount:40},
+        {dateISO:'2026-04-28', amount:80},
+        {dateISO:'2026-05-28', amount:80},
+        {dateISO:'2026-06-28', amount:150},
+        {dateISO:'2026-07-28', amount:150},
+        {dateISO:'2026-08-28', amount:150},
+        {dateISO:'2026-09-28', amount:100},
+        {dateISO:'2026-10-28', amount:100},
+        {dateISO:'2026-11-28', amount:100},
+        {dateISO:'2026-12-28', amount:100},
+        {dateISO:'2027-01-28', amount:100},
+      ]},
+
+      // Slim school one-offs
+      { id:'SER_SLIM_SCH_1', enabled:true, kind:'EXPENSE', title:'مدرسة سليم (دفعة 1/2)', amount:125, account:'KNET', bucket:'FIXED', category:'SCHOOL_FEES', flexible:false, recType:'ONCE', dateISO:'2026-03-10' },
+      { id:'SER_SLIM_SCH_2', enabled:true, kind:'EXPENSE', title:'مدرسة سليم (دفعة 2/2)', amount:125, account:'KNET', bucket:'FIXED', category:'SCHOOL_FEES', flexible:false, recType:'ONCE', dateISO:'2026-03-25' },
+
+      // Iqamas (one-offs)
+      { id:'SER_IQAMA_ME', enabled:true, kind:'EXPENSE', title:'تجديد إقامتي', amount:135, account:'KNET', bucket:'FIXED', category:'IQAMA', flexible:false, recType:'ONCE', dateISO:'2026-03-31' },
+      { id:'SER_IQAMA_SLIM', enabled:true, kind:'EXPENSE', title:'تجديد إقامة سليم', amount:135, account:'KNET', bucket:'FIXED', category:'IQAMA', flexible:false, recType:'ONCE', dateISO:'2026-08-06' },
+      { id:'SER_IQAMA_SAIF', enabled:true, kind:'EXPENSE', title:'تجديد إقامة سيف', amount:135, account:'KNET', bucket:'FIXED', category:'IQAMA', flexible:false, recType:'ONCE', dateISO:'2027-02-18' },
+      { id:'SER_IQAMA_SARA', enabled:true, kind:'EXPENSE', title:'تجديد إقامة سارة', amount:135, account:'KNET', bucket:'FIXED', category:'IQAMA', flexible:false, recType:'ONCE', dateISO:'2027-02-18' },
+
+      // Month close (FM end)
+      { id:'SER_FM_CLOSE', enabled:true, kind:'OP', title:'إقفال + مراجعة شهرية (Day 9)', amount:0, account:'', bucket:'OTHER', category:'MONTH_CLOSE', flexible:false, recType:'FM_END' },
+    ];
+
+    state.series = series;
+  }
+
+  function normalizeTask(t){
+    const x = {...t};
+    x.id = x.id || U.uid();
+    x.createdAt = x.createdAt || U.nowISO();
+    x.status = x.status || TASK_STATUS.TODO;
+    x.custom = !!x.custom;
+    x.amount = U.clamp3(x.amount||0);
+    x.kind = (x.kind||KIND.EXPENSE).toUpperCase();
+    x.bucket = (x.bucket||'OTHER').toUpperCase();
+    x.category = (x.category||'OTHER').toUpperCase();
+    if(x.account) x.account = String(x.account).toUpperCase();
+    if(!x.origDueISO) x.origDueISO = x.dueISO;
+    return x;
+  }
+
+  function expectedTasksForSeries(s){
+    const out = [];
+    if(!s || s.enabled===false) return out;
+
+    const planStart = state.cfg.planStartISO;
+    const planEnd = state.cfg.planEndISO;
+
+    const base = {
+      seriesId: s.id,
+      kind: (s.kind||'EXPENSE').toUpperCase(),
+      title: s.title || '',
+      amount: U.clamp3(s.amount||0),
+      account: (s.account||'').toUpperCase() || null,
+      bucket: (s.bucket||'OTHER').toUpperCase(),
+      category: (s.category||'OTHER').toUpperCase(),
+      flexible: !!s.flexible,
+      windowStartISO: null,
+      windowEndISO: null,
+    };
+
+    const addOne = (dueISO, amountOverride=null, titleOverride=null) => {
+      if(!dueISO) return;
+      if(U.cmpISO(dueISO, planStart) < 0 || U.cmpISO(dueISO, planEnd) > 0) return;
+      const t = {...base};
+      t.origDueISO = dueISO;
+      t.dueISO = dueISO;
+      if(amountOverride!=null && !isNaN(Number(amountOverride))) t.amount = U.clamp3(amountOverride);
+      if(titleOverride) t.title = titleOverride;
+
+      // windowStartDay (e.g. rent can be paid from day 1 until due)
+      if(s.windowStartDay!=null && !isNaN(Number(s.windowStartDay))){
+        const y = Number(dueISO.slice(0,4));
+        const m0 = Number(dueISO.slice(5,7))-1;
+        t.windowStartISO = U.mkDateClamped(y,m0,Number(s.windowStartDay));
+        t.windowEndISO = dueISO;
+      }
+      out.push(t);
+    };
+
+    const rec = (s.recType||'MONTHLY').toUpperCase();
+
+    if(rec === 'ONCE'){
+      addOne(s.dateISO, s.amount, s.title);
+    }else if(rec === 'CUSTOM'){
+      for(const it of (s.items||[])){
+        if(!it || !it.dateISO) continue;
+        addOne(it.dateISO, (it.amount!=null?it.amount:s.amount), (it.title||null));
+      }
+    }else if(rec === 'MONTHLY'){
+      const startISO = s.startISO || planStart;
+      const endISO = s.endISO || planEnd;
+      const sd = U.parseISO(startISO);
+      const ed = U.parseISO(endISO);
+      let y = sd.getFullYear(), m0 = sd.getMonth();
+      while(true){
+        const first = new Date(y,m0,1,12);
+        if(first > ed) break;
+        const due = U.mkDateClamped(y,m0,Number(s.day||1));
+        if(U.cmpISO(due, startISO) >= 0 && U.cmpISO(due, endISO) <= 0){
+          addOne(due, s.amount, s.title);
+        }
+        m0 += 1;
+        if(m0>11){ m0=0; y+=1; }
+      }
+    }else if(rec === 'FM_END'){
+      const months = iterFinancialMonths(planStart, planEnd);
+      for(const fm of months){
+        addOne(fm.endISO, 0, s.title);
+      }
+    }
+
+    return out;
+  }
+
+  function syncTasksFromSeries(){
+    const existing = Array.isArray(state.tasks) ? state.tasks.map(normalizeTask) : [];
+    const map = new Map();
+    for(const t of existing){
+      if(t.seriesId && t.origDueISO){
+        map.set(`${t.seriesId}|${t.origDueISO}`, t);
+      }
+    }
+
+    const expectedKeys = new Set();
+    const generated = [];
+
+    // generate tasks from enabled series
+    for(const s of (state.series||[])){
+      if(s.enabled===false) continue;
+      const exp = expectedTasksForSeries(s);
+      for(const proto of exp){
+        const key = `${proto.seriesId}|${proto.origDueISO}`;
+        expectedKeys.add(key);
+
+        const found = map.get(key);
+        if(found){
+          // keep DONE forever
+          if(found.status === TASK_STATUS.DONE){
+            generated.push(found);
+            continue;
+          }
+          // update fields if not custom
+          if(!found.custom){
+            found.title = proto.title;
+            found.amount = proto.amount;
+            found.account = proto.account;
+            found.bucket = proto.bucket;
+            found.category = proto.category;
+            found.flexible = proto.flexible;
+            found.windowStartISO = proto.windowStartISO;
+            found.windowEndISO = proto.windowEndISO;
+            // keep dueISO unless it's empty
+            if(!found.dueISO) found.dueISO = proto.dueISO;
+          }
+          // if was cancelled but series still exists → revive
+          if(found.status === TASK_STATUS.CANCELLED) found.status = TASK_STATUS.TODO;
+
+          generated.push(found);
+        }else{
+          generated.push(normalizeTask({
+            id: U.uid(),
+            createdAt: U.nowISO(),
+            seriesId: proto.seriesId,
+            origDueISO: proto.origDueISO,
+            dueISO: proto.dueISO,
+            kind: proto.kind,
+            title: proto.title,
+            amount: proto.amount,
+            account: proto.account,
+            bucket: proto.bucket,
+            category: proto.category,
+            flexible: proto.flexible,
+            windowStartISO: proto.windowStartISO,
+            windowEndISO: proto.windowEndISO,
+            status: TASK_STATUS.TODO,
+            doneTxId: null,
+            executedISO: null,
+            custom: false
+          }));
+        }
+      }
+    }
+
+    // cancel tasks that no longer expected (but keep DONE)
+    for(const t of existing){
+      if(!t.seriesId) continue;
+      const key = `${t.seriesId}|${t.origDueISO}`;
+      if(!expectedKeys.has(key) && t.status !== TASK_STATUS.DONE){
+        t.status = TASK_STATUS.CANCELLED;
+        generated.push(t);
+      }
+    }
+
+    // keep manual tasks (seriesId null)
+    const manual = existing.filter(t=>!t.seriesId);
+    const all = [...generated, ...manual];
+
+    // de-dup by id
+    const seen = new Set();
+    state.tasks = all.filter(t=>{
+      if(!t || !t.id) return false;
+      if(seen.has(t.id)) return false;
+      seen.add(t.id);
+      return true;
+    }).sort((a,b)=> (a.dueISO===b.dueISO ? String(a.title||'').localeCompare(String(b.title||'')) : a.dueISO.localeCompare(b.dueISO)));
+
+    bumpRev();
+    saveState(state,false);
+  }
+
+  function findTask(id){ return state.tasks.find(t=>t.id===id); }
+  function findSeries(id){ return state.series.find(s=>s.id===id); }
+  function findTx(id){ return state.tx.find(t=>t.id===id); }
+
+  /* =========================
+    TASK EXECUTION
+  ========================= */
+
+  function txFromTask(task, execISO, amount, note){
+    const kind = task.kind;
+    if(kind === 'OP'){
+      return null;
+    }
+    const tx = {
+      id: U.uid(),
+      createdAt: U.nowISO(),
+      date: execISO,
+      kind,
+      amount: U.clamp3((amount!=null?amount:(task.amount!=null?task.amount:0))),
+      bucket: (task.bucket||'OTHER').toUpperCase(),
+      category: (task.category||'OTHER').toUpperCase(),
+      note: note || task.title || '',
+    };
+    if(kind === KIND.TRANSFER){
+      tx.from = task.from || 'KNET';
+      tx.to = task.to || 'VISA';
+    }else{
+      tx.account = (task.account||state.cfg.defaultDailyAccount||'VISA').toUpperCase();
+    }
+    return normalizeTx(tx);
+  }
+
+  function markTaskDone(taskId, execISO, amountOverride=null, noteOverride=null){
+    const t = findTask(taskId);
+    if(!t) return false;
+
+    // for OP tasks we just mark done
+    if((t.kind||'').toUpperCase() === 'OP'){
+      t.status = TASK_STATUS.DONE;
+      t.executedISO = execISO;
+      t.doneTxId = null;
+      bumpRev();
+      saveState(state,true);
+      return true;
+    }
+
+    const tx = txFromTask(t, execISO, amountOverride, noteOverride);
+    if(!tx) return false;
+
+    state.tx.push(tx);
+    t.status = TASK_STATUS.DONE;
+    t.executedISO = execISO;
+    t.doneTxId = tx.id;
+
+    bumpRev();
+    saveState(state,true);
+    return true;
+  }
+
+  function unmarkTaskDone(taskId){
+    const t = findTask(taskId);
+    if(!t) return false;
+    if(t.status !== TASK_STATUS.DONE) return false;
+
+    if(t.doneTxId){
+      // add reversal tx
+      const orig = findTx(t.doneTxId);
+      if(orig){
+        const rev = {
+          id: U.uid(),
+          createdAt: U.nowISO(),
+          date: U.todayISO(),
+          kind: orig.kind,
+          amount: orig.amount,
+          bucket: orig.bucket,
+          category: orig.category,
+          note: 'REVERSAL: '+(orig.note||''),
+          reversalOf: orig.id
+        };
+        if(orig.kind === KIND.TRANSFER){
+          rev.from = orig.to;
+          rev.to = orig.from;
+        }else{
+          rev.account = orig.account;
+          // invert
+          if(orig.kind === KIND.EXPENSE) rev.kind = KIND.INCOME;
+          else if(orig.kind === KIND.INCOME) rev.kind = KIND.EXPENSE;
+        }
+        state.tx.push(normalizeTx(rev));
+      }
+    }
+
+    t.status = TASK_STATUS.TODO;
+    t.doneTxId = null;
+    t.executedISO = null;
+
+    bumpRev();
+    saveState(state,true);
+    return true;
+  }
+
+  /* =========================
+    MONTHLY REVIEW (FM_END)
+  ========================= */
+
+  function fmEndReviewKey(fmEndISO){
+    return fmEndISO;
+  }
+
+  function setMonthlyReview(fmEndISO, data){
+    const key = fmEndReviewKey(fmEndISO);
+    state.monthlyReview[key] = {...(state.monthlyReview[key]||{}), ...data, updatedAt:U.nowISO()};
+    bumpRev();
+    saveState(state,true);
+  }
+
+  /* =========================
+    LOCKS (commitments)
+  ========================= */
+
+  function computeLocks(asOfISO){
+    const horizon = Number(state.cfg.locks.horizonDays||35);
+    const endISO = U.addDays(asOfISO, horizon);
+
+    // sum remaining TODO tasks in window (exclude DAILY bucket)
+    let total = 0;
+    const byAcc = {VISA:0,KNET:0,CASH:0};
+
+    for(const t of (state.tasks||[])){
+      if(t.status !== TASK_STATUS.TODO) continue;
+      if(!t.dueISO) continue;
+      if(U.cmpISO(t.dueISO, asOfISO) < 0 || U.cmpISO(t.dueISO, endISO) > 0) continue;
+      if((t.bucket||'').toUpperCase() === 'DAILY') continue;
+      if((t.kind||'').toUpperCase() !== 'EXPENSE') continue;
+      const amt = Number(t.amount||0);
+      total += amt;
+      const acc = String(t.account||'').toUpperCase();
+      if(byAcc[acc]!=null) byAcc[acc] += amt;
+    }
+
+    // additional VISA bill lock: if you want to protect upcoming Visa bills due in visaBillsDays
+    const visaDays = Number(state.cfg.locks.visaBillsDays||14);
+    const visaEnd = U.addDays(asOfISO, visaDays);
+    let visaBill = 0;
+    for(const t of (state.tasks||[])){
+      if(t.status !== TASK_STATUS.TODO) continue;
+      if((t.kind||'').toUpperCase() !== 'EXPENSE') continue;
+      if(String(t.account||'').toUpperCase() !== 'VISA') continue;
+      if(!t.dueISO) continue;
+      if(U.cmpISO(t.dueISO, asOfISO) < 0 || U.cmpISO(t.dueISO, visaEnd) > 0) continue;
+      visaBill += Number(t.amount||0);
+    }
+
+    total = U.clamp3(total);
+    byAcc.VISA = U.clamp3(byAcc.VISA);
+    byAcc.KNET = U.clamp3(byAcc.KNET);
+    byAcc.CASH = U.clamp3(byAcc.CASH);
+    visaBill = U.clamp3(visaBill);
+
+    return { horizon, endISO, total, byAcc, visaBill };
+  }
+
+  /* =========================
+    FORECAST (30 days)
+  ========================= */
+
+  function forecast30(asOfISO, scenario, xVal){
+    const days = 30;
+    const rows = [];
+
+    // starting balances
+    const b0 = balancesAsOf(asOfISO).bal;
+    let bal = {...b0};
+
+    // carry
+    const carry = computeCarry(asOfISO);
+    let carryEnd = Number(carry.carryEnd||0);
+
+    // locks over horizon
+    const locks = computeLocks(asOfISO);
+
+    for(let i=1;i<=days;i++){
+      const iso = U.addDays(asOfISO, i);
+      const base = baseFor(iso);
+
+      // Determine planned daily spend
+      let spend;
+      const sc = String(scenario||'DISCIPLINE').toUpperCase();
+      if(sc === 'ZERO') spend = 0;
+      else if(sc === 'X') spend = Number(xVal||0);
+      else if(sc === 'BASE') spend = base;
+      else {
+        // DISCIPLINE
+        if(carryEnd < 0) spend = Number(state.cfg.minDailyWhenCarryNeg||0.3);
+        else spend = base;
+      }
+
+      // Apply carry update
+      carryEnd = U.clamp3(carryEnd + base - spend);
+
+      // Apply tasks due today (expenses/income)
+      const dueToday = (state.tasks||[]).filter(t=>t.status===TASK_STATUS.TODO && t.dueISO===iso);
+      let fixedOut = 0;
+      let fixedIn  = 0;
+      for(const t of dueToday){
+        const k = (t.kind||'').toUpperCase();
+        const amt = Number(t.amount||0);
+        if(k === KIND.EXPENSE){
+          fixedOut += amt;
+          const acc = String(t.account||'').toUpperCase();
+          if(bal[acc]!=null) bal[acc] = U.clamp3((bal[acc]||0) - amt);
+        }else if(k === KIND.INCOME){
+          fixedIn += amt;
+          const acc = String(t.account||'').toUpperCase();
+          if(bal[acc]!=null) bal[acc] = U.clamp3((bal[acc]||0) + amt);
+        }
+      }
+
+      // Apply daily spend from chosen account
+      const dailyAcc = (state.cfg.defaultDailyAccount||'VISA').toUpperCase();
+      if(bal[dailyAcc]!=null) bal[dailyAcc] = U.clamp3((bal[dailyAcc]||0) - spend);
+
+      const total = U.clamp3((bal.VISA||0)+(bal.KNET||0)+(bal.CASH||0));
+
+      // Risk notes
+      const notes = [];
+      if(total < 0) notes.push('⚠️ إجمالي سلبي');
+      if(bal.VISA < 0) notes.push('⚠️ Visa سالب');
+      if(bal.KNET < 0) notes.push('⚠️ K‑Net سالب');
+      if(bal.CASH < 0) notes.push('⚠️ Cash سالب');
+
+      rows.push({
+        iso,
+        base,
+        spend,
+        carryEnd,
+        fixedOut: U.clamp3(fixedOut),
+        fixedIn: U.clamp3(fixedIn),
+        visa: bal.VISA,
+        knet: bal.KNET,
+        cash: bal.CASH,
+        total,
+        notes: notes.join(' • ')
+      });
+    }
+
+    return { asOfISO, scenario, xVal, rows, locks };
+  }
+
+  /* ============================================================
+    4) UI LAYER
+  ============================================================ */
+
+  const state = loadState();
+
+  // ✅ bumpRev: lightweight revision counter (prevents stale UI + supports safe saves)
+  function bumpRev(reason){
+    try{
+      state._rev = (state._rev||0) + 1;
+      if(reason){
+        state._revReason = String(reason).slice(0,80);
+        state._revAt = Date.now();
+      }
+    }catch(_){}
+  }
+
+
+  // Ensure plan is seeded
+  (function initSeed(){
+    // Base schedule
+    if(!state.cfg.baseByFm || Object.keys(state.cfg.baseByFm||{}).length===0){
+      seedBaseByFm();
+      bumpRev();
+    }
+
+    // Series
+    if(!Array.isArray(state.series) || state.series.length===0){
+      seedSeries();
+      bumpRev();
+    }
+
+    // First run: tasks sync
+    syncTasksFromSeries();
+
+    // Ensure asOf defaults
+    if(!state.cfg.asOfISO) state.cfg.asOfISO = U.todayISO();
+
+    saveState(state,false);
+  })();
+
+  // DOM refs
+  const DOM = {
+    hdrMeta: U.qs('#hdr-meta'),
+    hdrEnv: U.qs('#hdr-env'),
+    hdrStorage: U.qs('#hdr-storage'),
+    hdrTheme: U.qs('#hdr-theme'),
+    hdrBtn: U.qs('#hdr-btn'),
+
+    // views
+    views: {
+      dashboard: U.qs('#view-dashboard'),
+      add: U.qs('#view-add'),
+      ledger: U.qs('#view-ledger'),
+      checklist: U.qs('#view-checklist'),
+      forecast: U.qs('#view-forecast'),
+      plan: U.qs('#view-plan'),
+      settings: U.qs('#view-settings'),
+    },
+
+    navBtns: U.qsa('#nav button'),
+    navBadge: U.qs('#nav-badge'),
+
+    // dashboard
+    dashBanner: U.qs('#dash_banner'),
+    balVisa: U.qs('#bal_visa'),
+    balKnet: U.qs('#bal_knet'),
+    balCash: U.qs('#bal_cash'),
+    balTotal: U.qs('#bal_total'),
+    balTotalSub: U.qs('#bal_total_sub'),
+    locksTotal: U.qs('#locks_total'),
+    locksSub: U.qs('#locks_sub'),
+    dashCarry: U.qs('#dash_carry'),
+    dashCarryRange: U.qs('#dash_carry_range'),
+    dashBase: U.qs('#dash_base'),
+    dashFm: U.qs('#dash_fm'),
+    dashSpend: U.qs('#dash_spend'),
+    dashAllow: U.qs('#dash_allow'),
+    dashUrgent: U.qs('#dash_urgent'),
+    btnMarkClean: U.qs('#btn_mark_clean'),
+
+    // add
+    addKindSeg: U.qs('#add_kind_seg'),
+    addAmount: U.qs('#add_amount'),
+    addDate: U.qs('#add_date'),
+    addAccount: U.qs('#add_account'),
+    addBucket: U.qs('#add_bucket'),
+    addCategory: U.qs('#add_category'),
+    addNote: U.qs('#add_note'),
+    addAccGroup: U.qs('#add_acc_group'),
+    addTrnGroup: U.qs('#add_trn_group'),
+    addFrom: U.qs('#add_from'),
+    addTo: U.qs('#add_to'),
+    btnAddSave: U.qs('#btn_add_save'),
+
+    // ledger
+    ledgerFilter: U.qs('#ledger_filter'),
+    ledgerAsOf: U.qs('#ledger_asof'),
+    ledgerList: U.qs('#ledger_list'),
+
+    // checklist
+    ckDate: U.qs('#ck_date'),
+    ckMode: U.qs('#ck_mode'),
+    ckList: U.qs('#ck_list'),
+
+    // forecast
+    fcScenario: U.qs('#fc_scenario'),
+    fcX: U.qs('#fc_x'),
+    fcSummary: U.qs('#fc_summary'),
+    fcList: U.qs('#fc_list'),
+
+    // settings
+    stAsOf: U.qs('#st_asof'),
+    stTheme: U.qs('#st_theme'),
+    stFmStart: U.qs('#st_fm_start'),
+    stPlanStart: U.qs('#st_plan_start'),
+    stPlanEnd: U.qs('#st_plan_end'),
+    stAnchorDate: U.qs('#st_anchor_date'),
+    stAnchorVal: U.qs('#st_anchor_val'),
+    stMinDaily: U.qs('#st_min_daily'),
+    stDailyAcc: U.qs('#st_daily_acc'),
+    btnSaveSettings: U.qs('#btn_save_settings'),
+    btnOpenReconcile: U.qs('#btn_open_reconcile'),
+
+    stOpenVisa: U.qs('#st_open_visa'),
+    stOpenKnet: U.qs('#st_open_knet'),
+    stOpenCash: U.qs('#st_open_cash'),
+
+    stBaseList: U.qs('#st_base_list'),
+    btnRegenBase: U.qs('#btn_regen_base'),
+
+    btnExport: U.qs('#btn_export'),
+    btnImport: U.qs('#btn_import'),
+    btnResetAll: U.qs('#btn_reset_all'),
+
+    // plan
+    btnSyncTasks: U.qs('#btn_sync_tasks'),
+    btnSeriesAdd: U.qs('#btn_series_add'),
+    planSummary: U.qs('#plan_summary'),
+    planSeries: U.qs('#plan_series'),
+
+    // modals
+    modalAlerts: U.qs('#modal_alerts'),
+    alertsBody: U.qs('#alerts_body'),
+    btnAlertsGoTasks: U.qs('#btn_alerts_go_tasks'),
+    btnAlertsDismiss: U.qs('#btn_alerts_dismiss'),
+
+    modalSetup: U.qs('#modal_setup'),
+    setupPreview: U.qs('#setup_preview'),
+    btnSetupApply: U.qs('#btn_setup_apply'),
+    btnSetupSkip: U.qs('#btn_setup_skip'),
+
+    modalExec: U.qs('#modal_exec'),
+    execTitle: U.qs('#exec_title'),
+    execHint: U.qs('#exec_hint'),
+    execDate: U.qs('#exec_date'),
+    execAmount: U.qs('#exec_amount'),
+    execAccount: U.qs('#exec_account'),
+    execBucket: U.qs('#exec_bucket'),
+    execNote: U.qs('#exec_note'),
+    btnExecConfirm: U.qs('#btn_exec_confirm'),
+
+    modalTaskEdit: U.qs('#modal_task_edit'),
+    teTitle: U.qs('#te_title'),
+    teDue: U.qs('#te_due'),
+    teAmount: U.qs('#te_amount'),
+    teAccount: U.qs('#te_account'),
+    teFlex: U.qs('#te_flex'),
+    teBucket: U.qs('#te_bucket'),
+    teCat: U.qs('#te_cat'),
+    btnTeSave: U.qs('#btn_te_save'),
+    btnTeReset: U.qs('#btn_te_reset'),
+
+    modalSeriesEdit: U.qs('#modal_series_edit'),
+    seTitle: U.qs('#se_title'),
+    seKind: U.qs('#se_kind'),
+    seEnabled: U.qs('#se_enabled'),
+    seName: U.qs('#se_name'),
+    seAmount: U.qs('#se_amount'),
+    seAccount: U.qs('#se_account'),
+    seBucket: U.qs('#se_bucket'),
+    seCat: U.qs('#se_cat'),
+    seFlex: U.qs('#se_flex'),
+    seWindowDay: U.qs('#se_window_day'),
+    seRec: U.qs('#se_rec'),
+    seDay: U.qs('#se_day'),
+    seStart: U.qs('#se_start'),
+    seEnd: U.qs('#se_end'),
+    seOnceRow: U.qs('#se_once_row'),
+    seOnceDate: U.qs('#se_once_date'),
+    seCustomRow: U.qs('#se_custom_row'),
+    seCustomText: U.qs('#se_custom_text'),
+    btnSeSave: U.qs('#btn_se_save'),
+    btnSeDelete: U.qs('#btn_se_delete'),
+
+    modalReconcile: U.qs('#modal_reconcile'),
+    recDate: U.qs('#rec_date'),
+    recComputed: U.qs('#rec_computed'),
+    recVisa: U.qs('#rec_visa'),
+    recKnet: U.qs('#rec_knet'),
+    recCash: U.qs('#rec_cash'),
+    btnRecApply: U.qs('#btn_rec_apply'),
+
+    modalBackup: U.qs('#modal_backup'),
+    bkTitle: U.qs('#bk_title'),
+    bkText: U.qs('#bk_text'),
+    btnBkCopy: U.qs('#btn_bk_copy'),
+    btnBkApply: U.qs('#btn_bk_apply'),
+  };
+
+  /* ========= THEME (Eye-friendly) ========= */
+  const THEME_LIST = ['calm','nature','soft','lavender','dark'];
+  const THEME_NAMES = { calm:'🫧 هادئ', nature:'🌿 طبيعي', soft:'🪶 ناعم', lavender:'💜 لافندر', dark:'🌙 داكن' };
+  const THEME_META_COLOR = { calm:'#0f766e', nature:'#5a7b5a', soft:'#5a6aa6', lavender:'#6b4fb3', dark:'#0b0c10' };
+
+  function applyTheme(theme){
+    const cur = (theme || (state && state.cfg && state.cfg.ui && state.cfg.ui.theme) || 'calm');
+    const final = THEME_LIST.includes(cur) ? cur : 'calm';
+    document.documentElement.dataset.theme = final;
+
+    // theme-color meta (helps Safari UI + Android address bar)
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if(meta) meta.setAttribute('content', THEME_META_COLOR[final] || THEME_META_COLOR.nature);
+
+    // header icon hint
+    if(DOM.hdrTheme){
+      DOM.hdrTheme.textContent = (final==='dark')?'🌙':(final==='lavender')?'💜':(final==='soft')?'☀️':'🌿';
+      DOM.hdrTheme.title = 'المظهر: ' + ((final==='dark')?'داكن':(final==='lavender')?'لافندر':(final==='soft')?'فاتح':'طبيعي');
+    }
+  }
+
+  function cycleTheme(){
+    const cur = (state && state.cfg && state.cfg.ui && state.cfg.ui.theme) ? state.cfg.ui.theme : 'nature';
+    const idx = THEME_LIST.indexOf(cur);
+    const next = THEME_LIST[(idx+1) % THEME_LIST.length];
+
+    if(state && state.cfg && state.cfg.ui) state.cfg.ui.theme = next;
+    if(DOM.stTheme) DOM.stTheme.value = next;
+
+    applyTheme(next);
+    if(ENV.PERSIST_OK) saveState(false);
+    U.toast('🎨 تم تغيير المظهر إلى ' + (THEME_NAMES[next] || next), 1700);
+  }
+
+  function setEnvIndicator(){
+    if(!DOM.hdrEnv) return;
+    const cls = ENV.IS_FILE ? 'file' : (ENV.IS_LOCALHOST ? 'local' : 'web');
+    const label = ENV.IS_FILE ? '📄 FILE' : (ENV.IS_LOCALHOST ? '🧪 LOCALHOST' : ('🌐 ' + (ENV.HOST||'WEB')));
+    DOM.hdrEnv.textContent = label;
+    DOM.hdrEnv.classList.remove('file','local','web');
+    DOM.hdrEnv.classList.add(cls);
+    const parts = [
+      ENV.ORIGIN || (location.href||''),
+      ENV.IN_APP ? 'In‑App Browser' : 'Browser',
+    ];
+    DOM.hdrEnv.title = parts.filter(Boolean).join('\n');
+  }
+
+  function setStorageIndicator(){
+    if(!DOM.hdrStorage) return;
+
+    const mode = ENV.PERSIST_OK ? (ENV.STORAGE_MODE||'LS') : 'TEMP';
+    const last = ENV.STORAGE_LAST || {};
+
+    let text = '💾 ' + mode;
+    let off  = !ENV.PERSIST_OK;
+
+    if(last && last.at && last.ok===false){
+      text='💾 FAIL';
+      off=true;
+    }else if(!ENV.PERSIST_OK){
+      text='💾 TEMP';
+      off=true;
+    }
+
+    DOM.hdrStorage.textContent = text;
+    DOM.hdrStorage.classList.toggle('off', off);
+
+    const tips=[];
+    tips.push('Mode: ' + mode);
+    if(last.at) tips.push(`Last: ${last.ok?'OK':'FAIL'} via ${last.via||mode} @ ${last.at}`);
+    if(last.bytes) tips.push(`Size: ${last.bytes} chars`);
+    if(last.err) tips.push('Err: ' + last.err);
+    if(ENV.IS_FILE) tips.push('FILE preview ممكن يمسح التخزين — اعمل Backup');
+    DOM.hdrStorage.title = tips.join('\n');
+  }
+
+  // expose for storage module
+  window.__ms_setHdrIndicators = ()=>{
+    try{ setEnvIndicator(); }catch(_){}
+    try{ setStorageIndicator(); }catch(_){}
+  };
+
+  function setHdrMeta(){
+    const asOf = state.cfg.asOfISO;
+    const fm = getFMRange(asOf);
+    const rev = state.meta.rev;
+    DOM.hdrMeta.textContent = `As‑Of ${asOf} • FM ${fm.startISO}→${fm.endISO} • rev ${rev}`;
+  }
+
+  /* =========================
+    MODALS
+  ========================= */
+  function openModal(el){ if(el){ el.classList.add('show'); } }
+  function closeModal(el){ if(el){ el.classList.remove('show'); } }
+
+  // Close buttons
+  U.qsa('[data-close]').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      const id = b.getAttribute('data-close');
+      closeModal(U.qs('#'+id));
+    });
+  });
+
+  // Close on backdrop
+  U.qsa('.overlay').forEach(ov=>{
+    ov.addEventListener('click', (e)=>{
+      if(e.target === ov) closeModal(ov);
+    });
+  });
+
+  /* =========================
+    VIEW NAV
+  ========================= */
+  let currentView = 'dashboard';
+  function showView(name){
+    if(!DOM.views[name]) name='dashboard';
+    currentView = name;
+    for(const k of Object.keys(DOM.views)){
+      DOM.views[k].classList.toggle('active', k===name);
+    }
+    DOM.navBtns.forEach(btn=>btn.classList.toggle('active', btn.getAttribute('data-view')===name));
+    if(name==='ledger') renderLedger();
+    if(name==='checklist') renderChecklist();
+    if(name==='forecast') renderForecast();
+    if(name==='settings') renderSettings();
+    if(name==='plan') renderPlan();
+    if(name==='dashboard') renderDashboard();
+  }
+
+  DOM.navBtns.forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const v = btn.getAttribute('data-view');
+      showView(v);
+    });
+  });
+
+  // quick actions (data-nav)
+  U.qsa('[data-nav]').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      const v = b.getAttribute('data-nav');
+      showView(v);
+    });
+  });
+
+  /* ============================================================
+    5) RENDERERS
+  ============================================================ */
+
+  function moneyHTML(val, cls=''){
+    const n = Number(val||0);
+    const s = U.fmt3(n);
+    return `<span class="mono ${cls}">${s}</span>`;
+  }
+
+  function renderDashboard(){
+    setHdrMeta();
+
+    const asOf = state.cfg.asOfISO;
+    const { bal, total } = balancesAsOf(asOf);
+    const carry = computeCarry(asOf);
+    const base = baseFor(asOf);
+    const spend = dailySpend(asOf);
+
+    DOM.balVisa.textContent = U.fmt3(bal.VISA);
+    DOM.balKnet.textContent = U.fmt3(bal.KNET);
+    DOM.balCash.textContent = U.fmt3(bal.CASH);
+    DOM.balTotal.textContent = U.fmt3(total);
+    DOM.balTotal.className = 'bal-val ' + (total<0?'neg':(total>0?'pos':'amb'));
+    DOM.balTotalSub.textContent = `As‑Of: ${asOf}`;
+
+    const locks = computeLocks(asOf);
+    DOM.locksTotal.textContent = U.fmt3(locks.total);
+    DOM.locksTotal.className = 'v ' + (locks.total>0?'amb':'');
+    DOM.locksSub.textContent = `${locks.horizon} يوم`;
+
+    DOM.dashCarry.textContent = U.fmt3(carry.carryEnd);
+    DOM.dashCarry.className = 'v ' + (carry.carryEnd<0?'neg':'pos');
+    if(carry.missingDays.length){
+      DOM.dashCarryRange.textContent = `Missing ${carry.missingDays.length} days • Worst: ${U.fmt3(carry.carryWorst)}`;
+    }else{
+      DOM.dashCarryRange.textContent = `OK • Anchor ${state.cfg.carryAnchorISO}`;
+    }
+
+    DOM.dashBase.textContent = U.fmt3(base);
+    DOM.dashFm.textContent = fmLabel(asOf);
+
+    DOM.dashSpend.textContent = U.fmt3(spend);
+
+    // allowed today is base if carry>=0 else minDaily
+    const allowed = (carry.carryEnd<0) ? Number(state.cfg.minDailyWhenCarryNeg||0.3) : base;
+    DOM.dashAllow.textContent = `المسموح اليوم: ${U.fmt3(allowed)}`;
+
+    // Banner logic
+    let bannerClass='warn', bannerText='';
+    if(!ENV.PERSIST_OK){
+      bannerClass='bad';
+      bannerText='❌ التخزين غير متاح. افتح الملف في Safari (مش داخل التطبيقات) واتأكد إن Private Mode مقفول.';
+    }else if(carry.missingDays.length){
+      bannerClass='warn';
+      bannerText=`⚠️ فيه ${carry.missingDays.length} أيام مش متقفلة في الـCarry. افتح المهام واعمل "يوم نظيف" أو سجّل المصروف.`;
+    }else if(carry.carryEnd < 0){
+      bannerClass='bad';
+      bannerText=`🚫 Carry سالب. خلي صرفك اليومي على Min (${U.fmt3(state.cfg.minDailyWhenCarryNeg)}) لحد ما يرجع موجب.`;
+    }else{
+      bannerClass='ok';
+      bannerText='✅ تمام. التزم بالـBase، وخلّص المهام قبل مواعيدها.';
+    }
+    DOM.dashBanner.className = `banner ${bannerClass}`;
+    DOM.dashBanner.textContent = bannerText;
+
+    // urgent alerts: negative balances / due soon tasks
+    const urgent = [];
+    if(total < 0) urgent.push({ type:'bad', text:'إجمالي السيولة سالب — لازم تصحيح' });
+    if(bal.VISA < 0) urgent.push({ type:'bad', text:'Visa سالب' });
+    if(bal.KNET < 0) urgent.push({ type:'bad', text:'K‑Net سالب' });
+    if(bal.CASH < 0) urgent.push({ type:'bad', text:'Cash سالب' });
+
+    // due in next 3 days
+    const soonEnd = U.addDays(asOf, 3);
+    const soon = (state.tasks||[]).filter(t=>t.status===TASK_STATUS.TODO && t.dueISO && U.cmpISO(t.dueISO, asOf)>=0 && U.cmpISO(t.dueISO, soonEnd)<=0);
+    if(soon.length){
+      urgent.push({ type:'warn', text:`مطلوب ${soon.length} مهام خلال 3 أيام` });
+    }
+
+    if(!urgent.length){
+      DOM.dashUrgent.innerHTML = `<div class="empty"><div class="ico">😌</div>مفيش حاجة عاجلة دلوقتي</div>`;
+    }else{
+      DOM.dashUrgent.innerHTML = urgent.map(u=>`<div class="banner ${u.type==='bad'?'bad':'warn'}" style="margin-bottom:8px">${U.esc(u.text)}</div>`).join('');
+    }
+
+    // badge for tasks
+    renderTaskBadge();
+  }
+
+  function renderTaskBadge(){
+    const asOf = state.cfg.asOfISO;
+    const dueEnd = U.addDays(asOf, 7);
+    const cnt = (state.tasks||[]).filter(t=>t.status===TASK_STATUS.TODO && t.dueISO && U.cmpISO(t.dueISO, asOf)>=0 && U.cmpISO(t.dueISO, dueEnd)<=0).length;
+    if(cnt>0){
+      DOM.navBadge.textContent = String(Math.min(99,cnt));
+      DOM.navBadge.classList.add('show');
+    }else{
+      DOM.navBadge.classList.remove('show');
+    }
+  }
+
+  function renderLedger(){
+    setHdrMeta();
+    const asOf = DOM.ledgerAsOf.value || state.cfg.asOfISO;
+    const filter = DOM.ledgerFilter.value;
+
+    const list = effectiveTx(asOf);
+
+    const filtered = list.filter(t=>{
+      if(filter==='ALL') return true;
+      if(filter==='EXPENSE') return t.kind===KIND.EXPENSE;
+      if(filter==='INCOME') return t.kind===KIND.INCOME;
+      if(filter==='TRANSFER') return t.kind===KIND.TRANSFER;
+      if(filter==='DAILY') return (t.bucket||'').toUpperCase()==='DAILY';
+      if(filter==='FIXED') return (t.bucket||'').toUpperCase()==='FIXED';
+      if(filter==='DEBT') return (t.bucket||'').toUpperCase()==='DEBT';
+      return true;
+    }).slice().reverse();
+
+    if(!filtered.length){
+      DOM.ledgerList.innerHTML = `<div class="empty"><div class="ico">📭</div>مفيش عمليات في الفترة دي</div>`;
+      return;
+    }
+
+    DOM.ledgerList.innerHTML = `<div class="list">${filtered.map(t=>{
+      const amtCls = t.kind===KIND.EXPENSE?'neg':(t.kind===KIND.INCOME?'pos':'xfer');
+      const sign = t.kind===KIND.EXPENSE?'-':(t.kind===KIND.INCOME?'+':'⇄');
+      const acc = t.kind===KIND.TRANSFER ? `${accountLabel(t.from)} → ${accountLabel(t.to)}` : accountLabel(t.account);
+      return `
+        <div class="item">
+          <div class="item-head">
+            <div>
+              <div class="item-title">${catIcon(t.category)} ${U.esc(t.note||catLabel(t.category))}</div>
+              <div class="item-sub">${U.esc(t.date)} • ${U.esc(acc)} • ${bucketChip(t.bucket)}</div>
+            </div>
+            <div class="item-amt ${amtCls}">${sign} ${U.fmt3(t.amount)}</div>
+          </div>
+          <div class="actions">
+            <button class="btn" data-ledger-edit="${t.id}">✏️ تعديل</button>
+            <button class="btn danger" data-ledger-del="${t.id}">🗑️ حذف</button>
+          </div>
+        </div>
+      `;
+    }).join('')}</div>`;
+
+    // bind ledger actions
+    U.qsa('[data-ledger-del]').forEach(b=>{
+      b.addEventListener('click', ()=>{
+        const id = b.getAttribute('data-ledger-del');
+        if(!confirm('حذف العملية؟')) return;
+        state.tx = state.tx.filter(t=>t.id!==id);
+        bumpRev();
+        saveState(state,true);
+        syncTasksFromSeries();
+        renderAll();
+      });
+    });
+    U.qsa('[data-ledger-edit]').forEach(b=>{
+      b.addEventListener('click', ()=>{
+        const id = b.getAttribute('data-ledger-edit');
+        openEditTx(id);
+      });
+    });
+  }
+
+  // Simple tx edit using Add form (prefill)
+  function openEditTx(id){
+    const t = findTx(id);
+    if(!t){ U.toast('TX غير موجود'); return; }
+    // Prefill add form
+    setAddKind(t.kind);
+    DOM.addAmount.value = U.fmt3(t.amount);
+    DOM.addDate.value = t.date;
+    if(t.kind===KIND.TRANSFER){
+      DOM.addFrom.value = t.from;
+      DOM.addTo.value = t.to;
+    }else{
+      DOM.addAccount.value = t.account;
+    }
+    DOM.addBucket.value = t.bucket;
+    DOM.addCategory.value = t.category;
+    DOM.addNote.value = t.note;
+
+    // change save button to update
+    DOM.btnAddSave.textContent = '💾 تحديث العملية';
+    DOM.btnAddSave.dataset.editing = id;
+    showView('add');
+  }
+
+  function renderChecklist(){
+    setHdrMeta();
+    const iso = DOM.ckDate.value || state.cfg.asOfISO;
+    const mode = DOM.ckMode.value;
+
+    let startISO, endISO;
+    if(mode==='TODAY'){
+      startISO = iso; endISO = iso;
+    }else if(mode==='FM'){
+      const r = getFMRange(iso);
+      startISO = r.startISO; endISO = r.endISO;
+    }else{
+      // YEAR: plan range
+      startISO = state.cfg.planStartISO;
+      endISO = state.cfg.planEndISO;
+    }
+
+    const tasks = (state.tasks||[])
+      .filter(t=>t.status !== TASK_STATUS.CANCELLED)
+      .filter(t=>t.dueISO && U.cmpISO(t.dueISO, startISO)>=0 && U.cmpISO(t.dueISO, endISO)<=0)
+      .slice()
+      .sort((a,b)=> (a.dueISO===b.dueISO ? String(a.title||'').localeCompare(String(b.title||'')) : a.dueISO.localeCompare(b.dueISO)));
+
+    if(!tasks.length){
+      DOM.ckList.innerHTML = `<div class="empty"><div class="ico">✅</div>مفيش مهام في المدة دي</div>`;
+      return;
+    }
+
+    const groups = {};
+    for(const t of tasks){
+      groups[t.dueISO] = groups[t.dueISO] || [];
+      groups[t.dueISO].push(t);
+    }
+
+    const html = Object.keys(groups).sort().map(d=>{
+      const items = groups[d];
+      const dueRel = U.daysBetween(iso, d);
+      const headChip = dueRel<0?'<span class="chip">ماضي</span>':(dueRel===0?'<span class="chip blue">اليوم</span>':(dueRel<=3?'<span class="chip amber">قريب</span>':'<span class="chip">لاحقًا</span>'));
+      return `
+        <div class="card" style="margin-bottom:12px">
+          <div class="card-title">${U.esc(d)} ${headChip}</div>
+          <div class="list">
+            ${items.map(t=>taskItemHTML(t, iso)).join('')}
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    DOM.ckList.innerHTML = html;
+
+    // bind task actions
+    bindTaskActions();
+  }
+
+  function taskItemHTML(t, todayISO){
+    const status = t.status;
+    const k = (t.kind||'EXPENSE').toUpperCase();
+    const isOP = k==='OP';
+    const amt = Number(t.amount||0);
+
+    const amtCls = (k==='INCOME')?'pos':(k==='EXPENSE'?'neg':'');
+    const amtTxt = isOP ? '' : `<div class="item-amt ${amtCls}">${k==='INCOME'?'+':'-'} ${U.fmt3(amt)}</div>`;
+
+    const flexChip = t.flexible ? '<span class="chip">flex</span>' : '';
+    const customChip = t.custom ? '<span class="chip blue">custom</span>' : '';
+    const doneChip = status===TASK_STATUS.DONE ? '<span class="chip green">done</span>' : '';
+
+    const win = (t.windowStartISO && t.windowEndISO) ? `<span class="chip">win ${t.windowStartISO}→${t.windowEndISO}</span>` : '';
+
+    const acc = (k==='TRANSFER') ? `${accountLabel(t.from)}→${accountLabel(t.to)}` : (t.account?accountLabel(t.account):'');
+
+    const title = `${catIcon(t.category)} ${U.esc(t.title)}`;
+    const sub = `${U.esc(acc)} ${bucketChip(t.bucket)}`;
+
+    const actions = [];
+    if(status===TASK_STATUS.TODO){
+      actions.push(`<button class="btn primary" data-task-do="${t.id}">✓ تنفيذ</button>`);
+      actions.push(`<button class="btn" data-task-edit="${t.id}">✏️ تعديل</button>`);
+      actions.push(`<button class="btn danger" data-task-cancel="${t.id}">✕ إلغاء</button>`);
+    }else if(status===TASK_STATUS.DONE){
+      actions.push(`<button class="btn" data-task-undo="${t.id}">↺ رجوع</button>`);
+      actions.push(`<button class="btn" data-task-edit="${t.id}">✏️ عرض/تعديل</button>`);
+    }else{
+      actions.push(`<button class="btn" data-task-restore="${t.id}">↩️ استرجاع</button>`);
+    }
+
+    return `
+      <div class="item">
+        <div class="item-head">
+          <div>
+            <div class="item-title">${title}</div>
+            <div class="item-sub">${U.esc(t.dueISO)} • ${sub}</div>
+            <div class="chips">${flexChip}${customChip}${doneChip}${win}</div>
+          </div>
+          ${amtTxt}
+        </div>
+        <div class="actions">${actions.join('')}</div>
+      </div>
+    `;
+  }
+
+  function bindTaskActions(){
+    U.qsa('[data-task-do]').forEach(b=>{
+      b.addEventListener('click', ()=>openExecModal(b.getAttribute('data-task-do')));
+    });
+    U.qsa('[data-task-undo]').forEach(b=>{
+      b.addEventListener('click', ()=>{
+        const id = b.getAttribute('data-task-undo');
+        if(!confirm('رجوع عن التنفيذ؟')) return;
+        unmarkTaskDone(id);
+        syncTasksFromSeries();
+        renderAll();
+      });
+    });
+    U.qsa('[data-task-cancel]').forEach(b=>{
+      b.addEventListener('click', ()=>{
+        const id = b.getAttribute('data-task-cancel');
+        const t = findTask(id);
+        if(!t) return;
+        if(!confirm('إلغاء المهمة؟')) return;
+        t.status = TASK_STATUS.CANCELLED;
+        bumpRev();
+        saveState(state,true);
+        renderAll();
+      });
+    });
+    U.qsa('[data-task-restore]').forEach(b=>{
+      b.addEventListener('click', ()=>{
+        const id = b.getAttribute('data-task-restore');
+        const t = findTask(id);
+        if(!t) return;
+        t.status = TASK_STATUS.TODO;
+        bumpRev();
+        saveState(state,true);
+        renderAll();
+      });
+    });
+    U.qsa('[data-task-edit]').forEach(b=>{
+      b.addEventListener('click', ()=>openTaskEditModal(b.getAttribute('data-task-edit')));
+    });
+  }
+
+  function renderForecast(){
+    setHdrMeta();
+    const asOf = state.cfg.asOfISO;
+    const sc = DOM.fcScenario.value;
+    const x = Number(DOM.fcX.value||0);
+
+    const fc = forecast30(asOf, sc, x);
+    const last = fc.rows[fc.rows.length-1];
+
+    const locks = fc.locks;
+    const locksTxt = `Locks ${locks.horizon}d: ${U.fmt3(locks.total)}`;
+
+    let cls='warn';
+    let txt = `نهاية 30 يوم: Total ${U.fmt3(last.total)} • Carry ${U.fmt3(last.carryEnd)} • ${locksTxt}`;
+    if(last.total < 0) cls='bad';
+    else if(last.total > 0) cls='ok';
+    DOM.fcSummary.className = `banner ${cls}`;
+    DOM.fcSummary.textContent = txt;
+
+    DOM.fcList.innerHTML = `<div class="list">${fc.rows.map(r=>{
+      const risk = r.total<0 || r.visa<0 || r.knet<0 || r.cash<0;
+      const bcls = risk ? 'bad' : (r.total<0.5 ? 'warn' : 'ok');
+      return `
+        <div class="item">
+          <div class="item-head">
+            <div>
+              <div class="item-title">📅 ${U.esc(r.iso)} <span class="chip">Base ${U.fmt3(r.base)}</span> <span class="chip blue">Spend ${U.fmt3(r.spend)}</span></div>
+              <div class="item-sub">Carry ${U.fmt3(r.carryEnd)} • FixedOut ${U.fmt3(r.fixedOut)} • FixedIn ${U.fmt3(r.fixedIn)}</div>
+              <div class="chips">
+                <span class="chip">V ${U.fmt3(r.visa)}</span>
+                <span class="chip">K ${U.fmt3(r.knet)}</span>
+                <span class="chip">C ${U.fmt3(r.cash)}</span>
+                <span class="chip ${r.total<0?'red':'green'}">T ${U.fmt3(r.total)}</span>
+              </div>
+            </div>
+            <div class="banner ${bcls}" style="margin:0; padding:8px 10px; font-size:12px; max-width:180px">${U.esc(r.notes||'') || '—'}</div>
+          </div>
+        </div>
+      `;
+    }).join('')}</div>`;
+  }
+
+  function renderSettings(){
+    setHdrMeta();
+    DOM.stAsOf.value = state.cfg.asOfISO;
+    DOM.stFmStart.value = state.cfg.financialMonthStartDay;
+    DOM.stPlanStart.value = state.cfg.planStartISO;
+    DOM.stPlanEnd.value = state.cfg.planEndISO;
+    DOM.stAnchorDate.value = state.cfg.carryAnchorISO;
+    DOM.stAnchorVal.value = state.cfg.carryAnchorValue;
+    DOM.stMinDaily.value = state.cfg.minDailyWhenCarryNeg;
+    DOM.stDailyAcc.value = state.cfg.defaultDailyAccount;
+
+    if(DOM.stTheme) DOM.stTheme.value = (state.cfg.ui && state.cfg.ui.theme) ? state.cfg.ui.theme : 'nature';
+
+    DOM.stOpenVisa.value = state.openingBalances.VISA;
+    DOM.stOpenKnet.value = state.openingBalances.KNET;
+    DOM.stOpenCash.value = state.openingBalances.CASH;
+
+    renderBaseList();
+  }
+
+  function renderBaseList(){
+    ensureBaseByFm();
+    const months = iterFinancialMonths(state.cfg.planStartISO, state.cfg.planEndISO);
+    DOM.stBaseList.innerHTML = `<div class="list">${months.map(fm=>{
+      const v = Number(state.cfg.baseByFm[fm.key]||0);
+      return `
+        <div class="item">
+          <div class="item-head">
+            <div>
+              <div class="item-title">📆 ${U.esc(fm.startISO)} → ${U.esc(fm.endISO)}</div>
+              <div class="item-sub">key: ${U.esc(fm.key)}</div>
+            </div>
+            <div class="item-amt amb">${U.fmt3(v)}</div>
+          </div>
+          <div class="actions">
+            <button class="btn" data-base-dec="${U.esc(fm.key)}">−</button>
+            <button class="btn" data-base-inc="${U.esc(fm.key)}">＋</button>
+            <button class="btn" data-base-set="${U.esc(fm.key)}">✎ Set</button>
+          </div>
+        </div>
+      `;
+    }).join('')}</div>`;
+
+    U.qsa('[data-base-dec]').forEach(b=>b.addEventListener('click', ()=>{
+      const k = b.getAttribute('data-base-dec');
+      state.cfg.baseByFm[k] = U.clamp3(Number(state.cfg.baseByFm[k]||0) - 0.1);
+      bumpRev(); saveState(state,false); renderBaseList(); renderDashboard();
+    }));
+    U.qsa('[data-base-inc]').forEach(b=>b.addEventListener('click', ()=>{
+      const k = b.getAttribute('data-base-inc');
+      state.cfg.baseByFm[k] = U.clamp3(Number(state.cfg.baseByFm[k]||0) + 0.1);
+      bumpRev(); saveState(state,false); renderBaseList(); renderDashboard();
+    }));
+    U.qsa('[data-base-set]').forEach(b=>b.addEventListener('click', ()=>{
+      const k = b.getAttribute('data-base-set');
+      const cur = Number(state.cfg.baseByFm[k]||0);
+      const v = prompt('Base value (0.000):', U.fmt3(cur));
+      if(v==null) return;
+      state.cfg.baseByFm[k] = U.clamp3(Number(v||0));
+      bumpRev(); saveState(state,true); renderBaseList(); renderDashboard();
+    }));
+  }
+
+  function renderPlan(){
+    setHdrMeta();
+
+    // Summary: total expected out/in over plan
+    const exp = (state.tasks||[]).filter(t=>t.status!==TASK_STATUS.CANCELLED);
+    const out = exp.filter(t=>t.kind===KIND.EXPENSE && (t.bucket||'').toUpperCase()!=='DAILY').reduce((a,t)=>a+Number(t.amount||0),0);
+    const inc = exp.filter(t=>t.kind===KIND.INCOME).reduce((a,t)=>a+Number(t.amount||0),0);
+
+    DOM.planSummary.innerHTML = `
+      <div class="stat-row">
+        <div class="stat"><div class="k">FIXED/DEBT المتوقع</div><div class="v neg">-${U.fmt3(out)}</div><div class="s">خلال الخطة</div></div>
+        <div class="stat"><div class="k">دخل متوقع</div><div class="v pos">+${U.fmt3(inc)}</div><div class="s">خلال الخطة</div></div>
+      </div>
+      <div class="hr"></div>
+      <div class="muted" style="line-height:1.7; font-size:12px">
+        ده مبني على المهام الحالية (Series→Tasks). لو عدّلت Series أو Base، اعمل تحديث.
+      </div>
+    `;
+
+    DOM.planSeries.innerHTML = `<div class="list">${(state.series||[]).map(s=>seriesItemHTML(s)).join('')}</div>`;
+
+    bindSeriesActions();
+  }
+
+  function seriesItemHTML(s){
+    const en = (s.enabled!==false);
+    const kind = (s.kind||'EXPENSE').toUpperCase();
+    const icon = kind==='INCOME'?'↑':(kind==='EXPENSE'?'↓':'⚙️');
+    const chip = en ? '<span class="chip green">ON</span>' : '<span class="chip red">OFF</span>';
+    const rec = (s.recType||'MONTHLY').toUpperCase();
+    let recTxt = rec;
+    if(rec==='MONTHLY') recTxt = `MONTHLY day ${s.day}`;
+    if(rec==='ONCE') recTxt = `ONCE ${s.dateISO}`;
+    if(rec==='CUSTOM') recTxt = `CUSTOM (${(s.items||[]).length})`;
+    if(rec==='FM_END') recTxt = 'FM_END';
+
+    const amt = Number(s.amount||0);
+    const amtCls = kind==='INCOME'?'pos':(kind==='EXPENSE'?'neg':'');
+
+    return `
+      <div class="item">
+        <div class="item-head">
+          <div>
+            <div class="item-title">${icon} ${catIcon(s.category)} ${U.esc(s.title||'')} ${chip}</div>
+            <div class="item-sub">${U.esc(recTxt)} • ${U.esc(accountLabel(s.account||''))} • ${bucketChip(s.bucket)} • ${s.flexible?'<span class="chip">flex</span>':''}</div>
+          </div>
+          <div class="item-amt ${amtCls}">${kind==='INCOME'?'+':'-'} ${U.fmt3(amt)}</div>
+        </div>
+        <div class="actions">
+          <button class="btn" data-series-edit="${U.esc(s.id)}">✏️ تعديل</button>
+          <button class="btn" data-series-toggle="${U.esc(s.id)}">${en?'⏸️ إيقاف':'▶️ تشغيل'}</button>
+        </div>
+      </div>
+    `;
+  }
+
+  function bindSeriesActions(){
+    U.qsa('[data-series-toggle]').forEach(b=>{
+      b.addEventListener('click', ()=>{
+        const id = b.getAttribute('data-series-toggle');
+        const s = findSeries(id);
+        if(!s) return;
+        s.enabled = !(s.enabled!==false);
+        bumpRev();
+        syncTasksFromSeries();
+        saveState(state,true);
+        renderPlan();
+        renderTaskBadge();
+      });
+    });
+    U.qsa('[data-series-edit]').forEach(b=>{
+      b.addEventListener('click', ()=>openSeriesEditModal(b.getAttribute('data-series-edit')));
+    });
+  }
+
+  /* ============================================================
+    6) EDIT / EXEC MODALS
+  ============================================================ */
+
+  let __execTaskId = null;
+  function openExecModal(taskId){
+    const t = findTask(taskId);
+    if(!t){ U.toast('Task غير موجود'); return; }
+    __execTaskId = taskId;
+
+    DOM.execTitle.textContent = `💸 تنفيذ: ${t.title}`;
+
+    const hint = [];
+    hint.push(`Due: <b>${U.esc(t.dueISO)}</b>`);
+    if(t.windowStartISO && t.windowEndISO){
+      hint.push(`Window: <b>${U.esc(t.windowStartISO)} → ${U.esc(t.windowEndISO)}</b>`);
+    }
+    hint.push(`Account: <b>${U.esc(accountLabel(t.account||state.cfg.defaultDailyAccount))}</b>`);
+    hint.push(`Bucket: <b>${U.esc(t.bucket)}</b>`);
+    DOM.execHint.innerHTML = hint.join('<br>');
+
+    DOM.execDate.value = state.cfg.asOfISO;
+    DOM.execAmount.value = U.fmt3(t.amount||0);
+    DOM.execAccount.value = (t.account||state.cfg.defaultDailyAccount||'VISA').toUpperCase();
+    DOM.execBucket.value = (t.bucket||'OTHER').toUpperCase();
+    DOM.execNote.value = t.title || '';
+
+    openModal(DOM.modalExec);
+  }
+
+  DOM.btnExecConfirm.addEventListener('click', ()=>{
+    if(!__execTaskId) return;
+    const t = findTask(__execTaskId);
+    if(!t) return;
+
+    const execISO = DOM.execDate.value || state.cfg.asOfISO;
+    const amt = Number(DOM.execAmount.value||0);
+    const acc = (DOM.execAccount.value||t.account||state.cfg.defaultDailyAccount||'VISA').toUpperCase();
+    const buck = (DOM.execBucket.value||t.bucket||'OTHER').toUpperCase();
+    const note = DOM.execNote.value || t.title;
+
+    // apply chosen edits to task (custom)
+    t.custom = true;
+    t.dueISO = execISO;
+    t.amount = U.clamp3(amt);
+    t.account = acc;
+    t.bucket = buck;
+
+    markTaskDone(t.id, execISO, amt, note);
+
+    closeModal(DOM.modalExec);
+    __execTaskId = null;
+
+    syncTasksFromSeries();
+    renderAll();
+  });
+
+  // Task edit modal
+  let __editTaskId = null;
+  function openTaskEditModal(taskId){
+    const t = findTask(taskId);
+    if(!t){ U.toast('Task غير موجود'); return; }
+    __editTaskId = taskId;
+
+    DOM.teTitle.value = t.title || '';
+    DOM.teDue.value = t.dueISO || '';
+    DOM.teAmount.value = U.fmt3(t.amount||0);
+    DOM.teAccount.value = (t.account||state.cfg.defaultDailyAccount||'VISA').toUpperCase();
+    DOM.teFlex.value = t.flexible ? 'YES' : 'NO';
+    DOM.teBucket.value = (t.bucket||'OTHER').toUpperCase();
+    DOM.teCat.value = (t.category||'OTHER').toUpperCase();
+
+    openModal(DOM.modalTaskEdit);
+  }
+
+  DOM.btnTeSave.addEventListener('click', ()=>{
+    if(!__editTaskId) return;
+    const t = findTask(__editTaskId);
+    if(!t) return;
+
+    t.title = DOM.teTitle.value || t.title;
+    t.dueISO = DOM.teDue.value || t.dueISO;
+    t.amount = U.clamp3(Number(DOM.teAmount.value||0));
+    t.account = (DOM.teAccount.value||t.account||state.cfg.defaultDailyAccount||'VISA').toUpperCase();
+    t.flexible = (DOM.teFlex.value==='YES');
+    t.bucket = (DOM.teBucket.value||t.bucket||'OTHER').toUpperCase();
+    t.category = (DOM.teCat.value||t.category||'OTHER').toUpperCase();
+
+    t.custom = true;
+
+    bumpRev();
+    saveState(state,true);
+    closeModal(DOM.modalTaskEdit);
+    __editTaskId = null;
+
+    renderAll();
+  });
+
+  DOM.btnTeReset.addEventListener('click', ()=>{
+    if(!__editTaskId) return;
+    const t = findTask(__editTaskId);
+    if(!t) return;
+    if(!t.seriesId || !t.origDueISO){
+      U.toast('دي مش مهمة جاية من Series');
+      return;
+    }
+    t.custom = false;
+    bumpRev();
+    syncTasksFromSeries();
+    saveState(state,true);
+    closeModal(DOM.modalTaskEdit);
+    __editTaskId = null;
+    renderAll();
+  });
+
+  // Series edit
+  let __editSeriesId = null;
+  function openSeriesEditModal(seriesId){
+    const s = findSeries(seriesId);
+    if(!s){ U.toast('Series غير موجود'); return; }
+    __editSeriesId = seriesId;
+
+    DOM.seTitle.textContent = `🧩 تعديل بند`;
+    DOM.seKind.value = (s.kind||'EXPENSE').toUpperCase();
+    DOM.seEnabled.value = (s.enabled!==false) ? 'ON' : 'OFF';
+    DOM.seName.value = s.title || '';
+    DOM.seAmount.value = U.fmt3(s.amount||0);
+    DOM.seAccount.value = (s.account||'KNET').toUpperCase();
+    DOM.seBucket.value = (s.bucket||'OTHER').toUpperCase();
+    DOM.seCat.value = (s.category||'OTHER').toUpperCase();
+    DOM.seFlex.value = s.flexible ? 'YES' : 'NO';
+    DOM.seWindowDay.value = (s.windowStartDay!=null ? String(s.windowStartDay) : '');
+
+    DOM.seRec.value = (s.recType||'MONTHLY').toUpperCase();
+    DOM.seDay.value = (s.day!=null ? String(s.day) : '');
+    DOM.seStart.value = s.startISO || state.cfg.planStartISO;
+    DOM.seEnd.value = s.endISO || state.cfg.planEndISO;
+    DOM.seOnceDate.value = s.dateISO || '';
+
+    // custom items
+    if(Array.isArray(s.items) && s.items.length){
+      DOM.seCustomText.value = s.items.map(it=>`${it.dateISO} = ${U.fmt3(it.amount!=null?it.amount:s.amount)}${it.title?(' = '+it.title):''}`).join('\n');
+    }else{
+      DOM.seCustomText.value = '';
+    }
+
+    updateSeriesRecUI();
+
+    openModal(DOM.modalSeriesEdit);
+  }
+
+  function updateSeriesRecUI(){
+    const r = DOM.seRec.value;
+    DOM.seOnceRow.style.display = (r==='ONCE') ? '' : 'none';
+    DOM.seCustomRow.style.display = (r==='CUSTOM') ? '' : 'none';
+    // day only for monthly
+    DOM.seDay.disabled = (r!=='MONTHLY');
+  }
+  DOM.seRec.addEventListener('change', updateSeriesRecUI);
+
+  DOM.btnSeSave.addEventListener('click', ()=>{
+    if(!__editSeriesId) return;
+    const s = findSeries(__editSeriesId);
+    if(!s) return;
+
+    s.kind = DOM.seKind.value;
+    s.enabled = (DOM.seEnabled.value==='ON');
+    s.title = DOM.seName.value || s.title;
+    s.amount = U.clamp3(Number(DOM.seAmount.value||0));
+    s.account = (DOM.seAccount.value||'').toUpperCase();
+    s.bucket = (DOM.seBucket.value||'OTHER').toUpperCase();
+    s.category = (DOM.seCat.value||'OTHER').toUpperCase();
+    s.flexible = (DOM.seFlex.value==='YES');
+
+    const wd = DOM.seWindowDay.value.trim();
+    s.windowStartDay = wd? Number(wd) : undefined;
+
+    s.recType = DOM.seRec.value;
+    s.day = DOM.seDay.value ? Number(DOM.seDay.value) : undefined;
+    s.startISO = DOM.seStart.value || state.cfg.planStartISO;
+    s.endISO = DOM.seEnd.value || state.cfg.planEndISO;
+    s.dateISO = DOM.seOnceDate.value || undefined;
+
+    if(s.recType === 'CUSTOM'){
+      const lines = (DOM.seCustomText.value||'').split(/\r?\n/).map(l=>l.trim()).filter(Boolean);
+      const items = [];
+      for(const ln of lines){
+        // YYYY-MM-DD = amt = optional title
+        const parts = ln.split('=').map(x=>x.trim());
+        const dateISO = parts[0];
+        const amt = Number(parts[1]||0);
+        const title = parts[2] || undefined;
+        if(/\d{4}-\d{2}-\d{2}/.test(dateISO)){
+          items.push({dateISO, amount:U.clamp3(amt), title});
+        }
+      }
+      s.items = items;
+    }else{
+      delete s.items;
+    }
+
+    bumpRev();
+    syncTasksFromSeries();
+    saveState(state,true);
+    closeModal(DOM.modalSeriesEdit);
+    __editSeriesId = null;
+
+    renderAll();
+  });
+
+  DOM.btnSeDelete.addEventListener('click', ()=>{
+    if(!__editSeriesId) return;
+    if(!confirm('حذف البند؟')) return;
+    state.series = (state.series||[]).filter(x=>x.id!==__editSeriesId);
+    bumpRev();
+    syncTasksFromSeries();
+    saveState(state,true);
+    closeModal(DOM.modalSeriesEdit);
+    __editSeriesId = null;
+    renderAll();
+  });
+
+  /* ============================================================
+    7) ADD TX FORM
+  ============================================================ */
+
+  let addKind = KIND.EXPENSE;
+  function setAddKind(kind){
+    addKind = (kind||KIND.EXPENSE).toUpperCase();
+    U.qsa('#add_kind_seg button').forEach(b=>{
+      const k = b.getAttribute('data-kind');
+      b.classList.toggle('active', k===addKind);
+      b.classList.toggle('exp', k===addKind && k===KIND.EXPENSE);
+      b.classList.toggle('inc', k===addKind && k===KIND.INCOME);
+      b.classList.toggle('trn', k===addKind && k===KIND.TRANSFER);
+    });
+
+    const isTr = (addKind===KIND.TRANSFER);
+    DOM.addAccGroup.style.display = isTr ? 'none' : '';
+    DOM.addTrnGroup.style.display = isTr ? '' : 'none';
+  }
+
+  DOM.addKindSeg.addEventListener('click', (e)=>{
+    const btn = e.target.closest('button');
+    if(!btn) return;
+    const k = btn.getAttribute('data-kind');
+    setAddKind(k);
+  });
+
+  function resetAddForm(){
+    DOM.addAmount.value = '';
+    DOM.addDate.value = state.cfg.asOfISO;
+    DOM.addAccount.value = state.cfg.defaultDailyAccount;
+    DOM.addBucket.value = 'DAILY';
+    DOM.addCategory.value = 'FOOD';
+    DOM.addNote.value = '';
+    DOM.addFrom.value = 'KNET';
+    DOM.addTo.value = 'VISA';
+
+    DOM.btnAddSave.textContent = '✓ حفظ العملية';
+    delete DOM.btnAddSave.dataset.editing;
+  }
+
+  DOM.btnAddSave.addEventListener('click', ()=>{
+    const amount = Number(DOM.addAmount.value||0);
+    if(!amount || amount<=0){ U.toast('اكتب مبلغ صحيح'); return; }
+    const date = DOM.addDate.value || state.cfg.asOfISO;
+    const bucket = (DOM.addBucket.value||'OTHER').toUpperCase();
+    const category = (DOM.addCategory.value||'OTHER').toUpperCase();
+    const note = DOM.addNote.value || catLabel(category);
+
+    const editingId = DOM.btnAddSave.dataset.editing;
+
+    if(editingId){
+      // Update existing tx
+      const tx = findTx(editingId);
+      if(!tx){ U.toast('TX مش موجود'); return; }
+
+      tx.kind = addKind;
+      tx.amount = U.clamp3(amount);
+      tx.date = date;
+      tx.bucket = bucket;
+      tx.category = category;
+      tx.note = note;
+      if(addKind===KIND.TRANSFER){
+        tx.from = (DOM.addFrom.value||'KNET').toUpperCase();
+        tx.to = (DOM.addTo.value||'VISA').toUpperCase();
+        tx.account = null;
+      }else{
+        tx.account = (DOM.addAccount.value||state.cfg.defaultDailyAccount||'VISA').toUpperCase();
+        tx.from = null; tx.to = null;
+      }
+
+      bumpRev();
+      saveState(state,true);
+      resetAddForm();
+      syncTasksFromSeries();
+      renderAll();
+      showView('ledger');
+      return;
+    }
+
+    // New tx
+    const tx = {
+      id: U.uid(),
+      createdAt: U.nowISO(),
+      date,
+      kind: addKind,
+      amount: U.clamp3(amount),
+      bucket,
+      category,
+      note,
+    };
+    if(addKind===KIND.TRANSFER){
+      tx.from = (DOM.addFrom.value||'KNET').toUpperCase();
+      tx.to = (DOM.addTo.value||'VISA').toUpperCase();
+    }else{
+      tx.account = (DOM.addAccount.value||state.cfg.defaultDailyAccount||'VISA').toUpperCase();
+    }
+
+    state.tx.push(normalizeTx(tx));
+    bumpRev();
+    saveState(state,true);
+
+    // mark the day confirmed
+    if(!state.dayMarks[date]) state.dayMarks[date] = { confirmed: true, note:'' };
+    else state.dayMarks[date].confirmed = true;
+
+    syncTasksFromSeries();
+
+    resetAddForm();
+    renderAll();
+    showView('dashboard');
+  });
+
+  /* ============================================================
+    8) CLEAN DAY
+  ============================================================ */
+
+  DOM.btnMarkClean.addEventListener('click', ()=>{
+    const iso = state.cfg.asOfISO;
+    if(!state.dayMarks[iso]) state.dayMarks[iso] = { confirmed:true, note:'Clean day' };
+    else state.dayMarks[iso].confirmed = true;
+    bumpRev();
+    saveState(state,true);
+    renderAll();
+  });
+
+  /* ============================================================
+    9) SETTINGS SAVE
+  ============================================================ */
+
+  DOM.btnSaveSettings.addEventListener('click', ()=>{
+    const asOf = DOM.stAsOf.value || state.cfg.asOfISO;
+    const fmStart = Math.min(28, Math.max(1, Number(DOM.stFmStart.value||10)));
+
+    state.cfg.asOfISO = asOf;
+    state.cfg.financialMonthStartDay = fmStart;
+    state.cfg.planStartISO = DOM.stPlanStart.value || state.cfg.planStartISO;
+    state.cfg.planEndISO = DOM.stPlanEnd.value || state.cfg.planEndISO;
+    state.cfg.carryAnchorISO = DOM.stAnchorDate.value || state.cfg.carryAnchorISO;
+    state.cfg.carryAnchorValue = Number(DOM.stAnchorVal.value||0);
+    state.cfg.minDailyWhenCarryNeg = Number(DOM.stMinDaily.value||0.3);
+    state.cfg.defaultDailyAccount = (DOM.stDailyAcc.value||'VISA').toUpperCase();
+
+    // UI prefs
+    if(!state.cfg.ui) state.cfg.ui={};
+    state.cfg.ui.theme = (DOM.stTheme && DOM.stTheme.value) ? DOM.stTheme.value : (state.cfg.ui.theme||'nature');
+    applyTheme(state.cfg.ui.theme);
+
+    state.openingBalances.VISA = U.clamp3(Number(DOM.stOpenVisa.value||0));
+    state.openingBalances.KNET = U.clamp3(Number(DOM.stOpenKnet.value||0));
+    state.openingBalances.CASH = U.clamp3(Number(DOM.stOpenCash.value||0));
+
+    bumpRev();
+    ensureBaseByFm();
+    syncTasksFromSeries();
+    saveState(state,true);
+    renderAll();
+  });
+
+  // Theme selector: apply immediately (no impact on الحسابات)
+  if(DOM.stTheme){
+    DOM.stTheme.addEventListener('change', ()=>{
+      if(!state.cfg.ui) state.cfg.ui={};
+      state.cfg.ui.theme = DOM.stTheme.value || 'nature';
+      applyTheme(state.cfg.ui.theme);
+      saveState(state,false);
+    });
+  }
+
+  DOM.btnRegenBase.addEventListener('click', ()=>{
+    if(!confirm('إعادة توليد Base حسب الجدول الافتراضي؟ (هيستبدل القيم الحالية)')) return;
+    seedBaseByFm();
+    bumpRev();
+    saveState(state,true);
+    renderAll();
+  });
+
+  /* ============================================================
+    10) RECONCILE
+  ============================================================ */
+
+  function openReconcile(){
+    DOM.recDate.value = state.cfg.asOfISO;
+    updateReconcileComputed();
+    DOM.recVisa.value = '';
+    DOM.recKnet.value = '';
+    DOM.recCash.value = '';
+    openModal(DOM.modalReconcile);
+  }
+
+  function updateReconcileComputed(){
+    const iso = DOM.recDate.value || state.cfg.asOfISO;
+    const { bal, total } = balancesAsOf(iso);
+    DOM.recComputed.className = 'banner warn';
+    DOM.recComputed.textContent = `المفروض: Visa ${U.fmt3(bal.VISA)} • K‑Net ${U.fmt3(bal.KNET)} • Cash ${U.fmt3(bal.CASH)} • Total ${U.fmt3(total)}`;
+  }
+
+  DOM.btnOpenReconcile.addEventListener('click', openReconcile);
+  DOM.recDate.addEventListener('change', updateReconcileComputed);
+
+  DOM.btnRecApply.addEventListener('click', ()=>{
+    const iso = DOM.recDate.value || state.cfg.asOfISO;
+    const comp = balancesAsOf(iso).bal;
+
+    const actVisa = Number(DOM.recVisa.value);
+    const actKnet = Number(DOM.recKnet.value);
+    const actCash = Number(DOM.recCash.value);
+
+    if([actVisa,actKnet,actCash].some(v=>Number.isNaN(v))){
+      U.toast('اكتب الأرصدة الفعلية الثلاثة');
+      return;
+    }
+
+    // compute delta and apply to opening balances directly
+    const dV = U.clamp3(actVisa - comp.VISA);
+    const dK = U.clamp3(actKnet - comp.KNET);
+    const dC = U.clamp3(actCash - comp.CASH);
+
+    state.openingBalances.VISA = U.clamp3(Number(state.openingBalances.VISA||0) + dV);
+    state.openingBalances.KNET = U.clamp3(Number(state.openingBalances.KNET||0) + dK);
+    state.openingBalances.CASH = U.clamp3(Number(state.openingBalances.CASH||0) + dC);
+
+    bumpRev();
+    saveState(state,true);
+    closeModal(DOM.modalReconcile);
+    renderAll();
+  });
+
+  /* ============================================================
+    11) BACKUP / IMPORT
+  ============================================================ */
+
+  function openBackup(mode){
+    if(mode==='EXPORT'){
+      DOM.bkTitle.textContent = '⬇️ Export';
+      DOM.btnBkApply.style.display = 'none';
+      DOM.bkText.value = JSON.stringify(state, null, 2);
+    }else{
+      DOM.bkTitle.textContent = '⬆️ Import';
+      DOM.btnBkApply.style.display = '';
+      DOM.bkText.value = '';
+    }
+    openModal(DOM.modalBackup);
+  }
+
+  DOM.btnExport.addEventListener('click', ()=>openBackup('EXPORT'));
+  DOM.btnImport.addEventListener('click', ()=>openBackup('IMPORT'));
+
+  DOM.btnBkCopy.addEventListener('click', async ()=>{
+    const txt = DOM.bkText.value || '';
+    if(!txt){ U.toast('مفيش نص'); return; }
+    try{
+      await navigator.clipboard.writeText(txt);
+      U.toast('📋 Copied');
+    }catch(e){
+      // fallback
+      DOM.bkText.focus();
+      DOM.bkText.select();
+      U.toast('انسخ يدويًا');
+    }
+  });
+
+  DOM.btnBkApply.addEventListener('click', ()=>{
+    const raw = DOM.bkText.value || '';
+    const parsed = safeParse(raw);
+    if(!parsed){ U.toast('JSON غير صالح'); return; }
+    const s = migrateLoadedState(parsed);
+    // Replace global state object by copying props
+    for(const k of Object.keys(state)) delete state[k];
+    Object.assign(state, s);
+    bumpRev();
+    saveState(state,true);
+    syncTasksFromSeries();
+    closeModal(DOM.modalBackup);
+    renderAll();
+  });
+
+  DOM.btnResetAll.addEventListener('click', ()=>{
+    if(!confirm('Reset: مسح كل البيانات؟')) return;
+    if(ENV.STORAGE_LS_OK){
+        try{
+          localStorage.removeItem(STORAGE_KEY);
+          localStorage.removeItem(LS_BACKUP_KEY);
+          localStorage.removeItem(LS_PREV_KEY);
+          localStorage.removeItem(STORAGE_KEY_OLD);
+          const legacy=['masareef_v11','masareef_v10','masareef_v9','masareef_v8','masareef_v7','masareef_v6','masareef_v5','masareef_v4','masareef_v3','masareef_v2'];
+          for(const k of legacy) localStorage.removeItem(k);
+        }catch(_){}
+      }
+      try{ if(ENV.STORAGE_SS_OK) sessionStorage.removeItem(SS_KEY); }catch(_){}
+      try{ if((window.name||'').startsWith(WN_PREFIX)) window.name=''; }catch(_){}
+      try{ IDB.del(IDB_KEY); IDB.del(IDB_BK); }catch(_){}
+
+    const fresh = defaultState();
+    for(const k of Object.keys(state)) delete state[k];
+    Object.assign(state, fresh);
+    seedBaseByFm();
+    seedSeries();
+    syncTasksFromSeries();
+    saveState(state,true);
+    renderAll();
+    U.toast('✅ Reset Done');
+  });
+
+  /* ============================================================
+    12) PLAN ACTIONS
+  ============================================================ */
+
+  DOM.btnSyncTasks.addEventListener('click', ()=>{
+    syncTasksFromSeries();
+    U.toast('🔄 تم تحديث المهام');
+    renderAll();
+  });
+
+  DOM.btnSeriesAdd.addEventListener('click', ()=>{
+    // create new empty series then open edit
+    const id = 'SER_'+U.uid();
+    const s = {
+      id,
+      enabled:true,
+      kind:'EXPENSE',
+      title:'بند جديد',
+      amount:0,
+      account:'KNET',
+      bucket:'FIXED',
+      category:'OTHER',
+      flexible:true,
+      recType:'MONTHLY',
+      day:10,
+      startISO: state.cfg.planStartISO,
+      endISO: state.cfg.planEndISO,
+    };
+    state.series.push(s);
+    bumpRev();
+    saveState(state,false);
+    openSeriesEditModal(id);
+  });
+
+  /* ============================================================
+    13) ALERTS
+  ============================================================ */
+
+  function computeAlerts(asOfISO){
+    const alerts = [];
+
+    // Storage
+    if(!ENV.PERSIST_OK){
+      alerts.push({level:'bad', text:'التخزين غير متاح. افتح الملف في Safari واتأكد إن Private Mode مقفول.'});
+    }
+    if(ENV.IN_APP){
+      alerts.push({level:'warn', text:'واضح إنك فاتح من داخل تطبيق (In‑App Browser). الأفضل Safari عشان التخزين والتحميل.'});
+    }
+
+    // Balances
+    const { bal, total } = balancesAsOf(asOfISO);
+    if(total < 0) alerts.push({level:'bad', text:`إجمالي السيولة سالب: ${U.fmt3(total)}`});
+    for(const a of ACCOUNTS){
+      if(bal[a] < 0) alerts.push({level:'bad', text:`${accountLabel(a)} سالب: ${U.fmt3(bal[a])}`});
+    }
+
+    // Carry
+    const carry = computeCarry(asOfISO);
+    if(carry.missingDays.length){
+      alerts.push({level:'warn', text:`فيه ${carry.missingDays.length} أيام مش متقفلة في Carry — اعمل يوم نظيف أو سجل المصروف.`});
+    }
+    if(carry.carryEnd < 0){
+      alerts.push({level:'bad', text:`Carry سالب (${U.fmt3(carry.carryEnd)}). خلي صرفك اليومي على Min (${U.fmt3(state.cfg.minDailyWhenCarryNeg)}).`});
+    }
+
+    // Tasks due
+    const dueToday = (state.tasks||[]).filter(t=>t.status===TASK_STATUS.TODO && t.dueISO===asOfISO);
+    if(dueToday.length){
+      const sum = dueToday.reduce((a,t)=>a+Number(t.amount||0),0);
+      alerts.push({level:'warn', text:`مهام مستحقة اليوم: ${dueToday.length} (≈ ${U.fmt3(sum)})`});
+    }
+    const dueSoonEnd = U.addDays(asOfISO, 3);
+    const dueSoon = (state.tasks||[]).filter(t=>t.status===TASK_STATUS.TODO && t.dueISO && U.cmpISO(t.dueISO, asOfISO)>=0 && U.cmpISO(t.dueISO, dueSoonEnd)<=0);
+    if(dueSoon.length){
+      alerts.push({level:'warn', text:`مهام خلال 3 أيام: ${dueSoon.length}`});
+    }
+
+    // Locks
+    const locks = computeLocks(asOfISO);
+    if(locks.total > 0){
+      alerts.push({level:'warn', text:`حجز التزامات ${locks.horizon} يوم: ${U.fmt3(locks.total)}`});
+    }
+
+    return alerts;
+  }
+
+  function renderAlerts(){
+    const asOf = state.cfg.asOfISO;
+    const alerts = computeAlerts(asOf);
+
+    if(!alerts.length){
+      DOM.alertsBody.innerHTML = `<div class="empty"><div class="ico">🔕</div>مفيش تنبيهات دلوقتي</div>`;
+      return alerts;
+    }
+
+    DOM.alertsBody.innerHTML = alerts.map(a=>`<div class="banner ${a.level==='bad'?'bad':'warn'}">${U.esc(a.text)}</div>`).join('');
+    return alerts;
+  }
+
+  function openAlerts(force=false){
+    const today = U.todayISO();
+    if(!force && state.cfg.ui.alertsDismissedISO === today) return;
+
+    renderAlerts();
+    openModal(DOM.modalAlerts);
+    state.cfg.ui.alertsShownISO = today;
+    bumpRev();
+    saveState(state,false);
+  }
+
+  if(DOM.hdrTheme) DOM.hdrTheme.addEventListener('click', cycleTheme);
+    DOM.hdrBtn.addEventListener('click', ()=>openAlerts(true));
+  DOM.btnAlertsGoTasks.addEventListener('click', ()=>{
+    closeModal(DOM.modalAlerts);
+    showView('checklist');
+  });
+  DOM.btnAlertsDismiss.addEventListener('click', ()=>{
+    state.cfg.ui.alertsDismissedISO = U.todayISO();
+    bumpRev();
+    saveState(state,true);
+    closeModal(DOM.modalAlerts);
+  });
+
+  /* ============================================================
+    14) FIRST-RUN SETUP
+  ============================================================ */
+
+  function shouldShowSetup(){
+    if(state.cfg.ui.setupDone) return false;
+    if((state.tx||[]).length>0) return false;
+    return true;
+  }
+
+  function setupPreviewData(){
+    const iso = state.cfg.asOfISO;
+    return [
+      { kind:'EXPENSE', amount:1.950, account:'VISA', bucket:'FIXED', category:'BILLS', note:'فاتورة' , date: iso },
+      { kind:'TRANSFER', amount:2.000, from:'KNET', to:'CASH', bucket:'OTHER', category:'OTHER', note:'تحويل KNET→CASH', date: iso },
+      { kind:'TRANSFER', amount:2.000, from:'VISA', to:'CASH', bucket:'OTHER', category:'OTHER', note:'تحويل VISA→CASH', date: iso },
+      { kind:'TRANSFER', amount:1.500, from:'KNET', to:'VISA', bucket:'OTHER', category:'OTHER', note:'تحويل KNET→VISA', date: iso },
+    ];
+  }
+
+  function renderSetupPreview(){
+    const rows = setupPreviewData();
+    DOM.setupPreview.innerHTML = rows.map(r=>{
+      const sign = r.kind==='EXPENSE'?'-':(r.kind==='INCOME'?'+':'⇄');
+      const acc = r.kind==='TRANSFER' ? `${accountLabel(r.from)} → ${accountLabel(r.to)}` : accountLabel(r.account);
+      const amtCls = r.kind==='EXPENSE'?'neg':(r.kind==='INCOME'?'pos':'xfer');
+      return `
+        <div class="item">
+          <div class="item-head">
+            <div>
+              <div class="item-title">${U.esc(r.note)}</div>
+              <div class="item-sub">${U.esc(r.date)} • ${U.esc(acc)} • ${bucketChip(r.bucket)}</div>
+            </div>
+            <div class="item-amt ${amtCls}">${sign} ${U.fmt3(r.amount)}</div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function applySetup(){
+    const rows = setupPreviewData();
+
+    // compute delta per account from these rows
+    const delta = {VISA:0,KNET:0,CASH:0};
+    for(const r of rows){
+      const amt = Number(r.amount||0);
+      if(r.kind==='EXPENSE'){
+        delta[r.account] -= amt;
+      }else if(r.kind==='INCOME'){
+        delta[r.account] += amt;
+      }else if(r.kind==='TRANSFER'){
+        delta[r.from] -= amt;
+        delta[r.to] += amt;
+      }
+    }
+
+    // adjust opening backwards so that asOf balances remain the same after adding tx
+    state.openingBalances.VISA = U.clamp3(Number(state.openingBalances.VISA||0) - delta.VISA);
+    state.openingBalances.KNET = U.clamp3(Number(state.openingBalances.KNET||0) - delta.KNET);
+    state.openingBalances.CASH = U.clamp3(Number(state.openingBalances.CASH||0) - delta.CASH);
+
+    // push tx
+    for(const r of rows){
+      const t = normalizeTx({
+        id: U.uid(),
+        createdAt: U.nowISO(),
+        date: r.date,
+        kind: r.kind,
+        amount: r.amount,
+        account: r.account,
+        from: r.from,
+        to: r.to,
+        bucket: r.bucket,
+        category: r.category,
+        note: r.note
+      });
+      state.tx.push(t);
+    }
+
+    state.cfg.ui.setupDone = true;
+    bumpRev();
+    saveState(state,true);
+
+    syncTasksFromSeries();
+    renderAll();
+  }
+
+  DOM.btnSetupApply.addEventListener('click', ()=>{
+    applySetup();
+    closeModal(DOM.modalSetup);
+  });
+  DOM.btnSetupSkip.addEventListener('click', ()=>{
+    state.cfg.ui.setupDone = true;
+    bumpRev();
+    saveState(state,true);
+    closeModal(DOM.modalSetup);
+    U.toast('تم التخطي');
+  });
+
+  /* ============================================================
+    15) INPUT BINDINGS
+  ============================================================ */
+
+  // Ledger filters
+  DOM.ledgerFilter.addEventListener('change', renderLedger);
+  DOM.ledgerAsOf.addEventListener('change', renderLedger);
+
+  // Checklist
+  DOM.ckDate.addEventListener('change', renderChecklist);
+  DOM.ckMode.addEventListener('change', renderChecklist);
+
+  // Forecast
+  DOM.fcScenario.addEventListener('change', renderForecast);
+  DOM.fcX.addEventListener('input', ()=>{
+    if(DOM.fcScenario.value==='X') renderForecast();
+  });
+
+  // Reconcile computed refresh
+  DOM.recVisa.addEventListener('input', ()=>{});
+
+  // Settings: quick jump to Plan (inject button)
+  (function injectPlanButton(){
+    const settingsView = DOM.views.settings;
+    if(!settingsView) return;
+    const firstActions = settingsView.querySelector('.card .actions');
+    if(!firstActions) return;
+    const btn = document.createElement('button');
+    btn.className = 'btn';
+    btn.textContent = '📅 خطة السنة';
+    btn.addEventListener('click', ()=>showView('plan'));
+    firstActions.appendChild(btn);
+  })();
+
+  // Easter: tap logo to open plan
+  const logo = U.qs('#hdr-logo');
+  if(logo){
+    let t0=0;
+    logo.addEventListener('click', ()=>{
+      const now = Date.now();
+      if(now - t0 < 350){
+        showView('plan');
+      }else{
+        U.toast('اضغط مرتين لفتح الخطة');
+      }
+      t0 = now;
+    });
+  }
+
+  /* ============================================================
+    16) RENDER ALL
+  ============================================================ */
+
+  function renderAll(){
+    setEnvIndicator();
+    setStorageIndicator();
+    setHdrMeta();
+
+    // set inputs
+    DOM.addDate.value = state.cfg.asOfISO;
+    DOM.ledgerAsOf.value = state.cfg.asOfISO;
+    DOM.ckDate.value = state.cfg.asOfISO;
+
+    // render current view
+    if(currentView==='dashboard') renderDashboard();
+    else if(currentView==='ledger') renderLedger();
+    else if(currentView==='checklist') renderChecklist();
+    else if(currentView==='forecast') renderForecast();
+    else if(currentView==='settings') renderSettings();
+    else if(currentView==='plan') renderPlan();
+  }
+
+  /* ============================================================
+    17) BOOT
+  ============================================================ */
+
+  function boot(){
+      try{ const bb=document.getElementById('bootBlocker'); if(bb) bb.style.display='none'; }catch(_e){}
+    // defaults for forms
+    resetAddForm();
+    setAddKind(KIND.EXPENSE);
+
+    // set default add date
+    DOM.addDate.value = state.cfg.asOfISO;
+
+    // Theme (eye-friendly)
+    applyTheme();
+
+    // Render
+    renderAll();
+
+    // Auto restore from IndexedDB if it has newer snapshot
+    autoRestoreFromIDB().then(res=>{
+      if(res && res.restored){
+        try{ applyTheme(); }catch(_){ }
+        try{ syncTasksFromSeries(); }catch(_){ }
+        renderAll();
+        U.toast(`✅ تم استرجاع نسخة احتياطية تلقائيًا (${res.source})`, 3200);
+      }
+      try{ window.__ms_setHdrIndicators && window.__ms_setHdrIndicators(); }catch(_){ }
+    });
+
+    // Auto alerts once/day
+    const today = U.todayISO();
+    const alerts = computeAlerts(state.cfg.asOfISO);
+    if(alerts.length && state.cfg.ui.alertsShownISO !== today && state.cfg.ui.alertsDismissedISO !== today){
+      // small delay
+      setTimeout(()=>openAlerts(false), 400);
+    }
+
+    // Setup modal
+    if(shouldShowSetup()){
+      renderSetupPreview();
+      setTimeout(()=>openModal(DOM.modalSetup), 300);
+    }
+
+    // show start view
+    showView('dashboard');
+  }
+
+  
+  // expose emergency backup opener for storage layer (used when save fails)
+  window.__ms_openBackup = (emergency=false)=>{
+    try{ openBackup('EXPORT'); }catch(_){}
+    if(emergency){
+      try{ if(DOM.bkTitle) DOM.bkTitle.textContent = '🆘 Emergency Backup'; }catch(_){}
+      try{ U.toast('🆘 فشل الحفظ — انسخ النسخة الاحتياطية الآن', 3500); }catch(_){}
+    }
+  };
+
+boot();
+
+})();
+</script>
+
+</body>
+</html>
